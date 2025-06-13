@@ -1,0 +1,147 @@
+# Environment files
+.env
+!.env.example
+
+# Sensitive configuration files
+/config/*.php
+!/config/config.sample.php
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Uploads
+/uploads/*
+!/uploads/.gitkeep
+
+# Logs
+*.log
+/storage/logs/*
+
+# Cache
+/storage/framework/cache/
+/storage/framework/views/
+/storage/framework/sessions/
+
+# Environment
+.env
+.env.*.local
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-*
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Development files
+*.swp
+*.swo
+*~
+
+# Testing
+/coverage/
+.phpunit.result.cache
+
+# Local development
+Homestead.json
+Homestead.yaml
+Vagrantfile
+
+# Debug
+.phpunit.result.cache
+.phpunit.cache/
+
+# Build
+dist/
+build/
+
+# Dependency directories
+bower_components/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Claude-specific files
+.claude/
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-*
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Development files
+*.swp
+*.swo
+*~
+
+# Testing
+/coverage/
+.phpunit.result.cache
+
+# Local development
+Homestead.json
+Homestead.yaml
+Vagrantfile
+
+# Debug
+.phpunit.result.cache
+.phpunit.cache/
+
+# Build
+dist/
+build/
+
+# Dependency directories
+bower_components/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
