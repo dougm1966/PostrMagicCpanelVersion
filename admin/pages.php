@@ -141,49 +141,51 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     <?= $editing_page ? 'Edit Page' : 'Create New Page' ?>
                 </h3>
             </div>
-            <form method="POST" class="p-6 space-y-4">
+            <form method="POST" class="p-6 space-y-8">
                 <input type="hidden" name="action" value="<?= $editing_page ? 'update' : 'create' ?>">
                 <?php if ($editing_page): ?>
                 <input type="hidden" name="id" value="<?= $editing_page['id'] ?>">
                 <?php endif; ?>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Page Title</label>
-                        <input type="text" id="title" name="title" value="<?= htmlspecialchars($editing_page['title'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white" onkeyup="generateSlug()">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Page Title</label>
+                        <input type="text" id="title" name="title" value="<?= htmlspecialchars($editing_page['title'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3" onkeyup="generateSlug()">
                     </div>
                     
-                    <div>
-                        <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL Slug</label>
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">URL Slug</label>
                         <div class="mt-1 flex rounded-md shadow-sm">
                             <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">/page/</span>
-                            <input type="text" id="slug" name="slug" value="<?= htmlspecialchars($editing_page['slug'] ?? '') ?>" required class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 dark:border-gray-600 focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                            <input type="text" id="slug" name="slug" value="<?= htmlspecialchars($editing_page['slug'] ?? '') ?>" required class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 dark:border-gray-600 focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                         </div>
                     </div>
                 </div>
                 
-                <div>
-                    <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Meta Description</label>
-                    <input type="text" id="meta_description" name="meta_description" value="<?= htmlspecialchars($editing_page['meta_description'] ?? '') ?>" maxlength="160" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
-                    <p class="mt-1 text-sm text-gray-500">SEO meta description (max 160 characters)</p>
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Meta Description</label>
+                    <input type="text" id="meta_description" name="meta_description" value="<?= htmlspecialchars($editing_page['meta_description'] ?? '') ?>" maxlength="160" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                    <p class="mt-2 text-sm text-gray-500">SEO meta description (max 160 characters)</p>
                 </div>
                 
-                <div>
-                    <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Page Content</label>
-                    <textarea id="content" name="content" rows="15" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"><?= htmlspecialchars($editing_page['content'] ?? '') ?></textarea>
-                    <p class="mt-1 text-sm text-gray-500">You can use HTML and basic styling. For complex layouts, consider using a page builder.</p>
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Page Content</label>
+                    <textarea id="content" name="content" rows="15" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3"><?= htmlspecialchars($editing_page['content'] ?? '') ?></textarea>
+                    <p class="mt-2 text-sm text-gray-500">You can use HTML and basic styling. For complex layouts, consider using a page builder.</p>
                 </div>
                 
-                <div class="flex items-center">
-                    <input type="checkbox" id="is_published" name="is_published" <?= ($editing_page['is_published'] ?? 1) ? 'checked' : '' ?> class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                    <label for="is_published" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Published (visible to public)</label>
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="is_published" name="is_published" <?= ($editing_page['is_published'] ?? 1) ? 'checked' : '' ?> class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                        <label for="is_published" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Published (visible to public)</label>
+                    </div>
                 </div>
                 
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="cancelEdit()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="cancelEdit()" class="bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-6 py-3 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500">
                         Cancel
                     </button>
-                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <?= $editing_page ? 'Update Page' : 'Create Page' ?>
                     </button>
                 </div>

@@ -107,32 +107,10 @@
         </a>
 
         <!-- System Settings -->
-        <div class="nav-group">
-            <button class="group flex items-center w-full px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400 justify-between">
-                <div class="flex items-center">
-                    <i data-lucide="settings" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
-                    System Settings
-                </div>
-                <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500 dark:text-gray-400"></i>
-            </button>
-            <div class="pl-10 space-y-1 mt-1">
-                <a href="/admin/settings.php?general=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
-                    General Settings
-                </a>
-                <a href="/admin/settings.php?api=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
-                    API Configuration
-                </a>
-                <a href="/admin/settings.php?email=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
-                    Email Settings
-                </a>
-                <a href="/admin/settings.php?integrations=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
-                    Integrations
-                </a>
-                <a href="/admin/settings.php?security=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
-                    Security Settings
-                </a>
-            </div>
-        </div>
+        <a href="/admin/settings.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+            <i data-lucide="settings" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
+            System Settings
+        </a>
 
         <!-- Divider -->
 
@@ -165,19 +143,19 @@
         </button>
         
         <!-- Admin Profile Popup (Hidden by default) -->
-        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white rounded-lg shadow-lg border border-gray-100 mb-2 z-50">
+        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50">
             <div class="p-2">
-                <a href="/admin/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 rounded-md">
+                <a href="/admin/profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="user" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Admin Profile
                 </a>
-                <a href="/admin/settings.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 rounded-md">
+                <a href="/admin/settings.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="settings" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Settings
                 </a>
-                <a href="/admin/logs.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 rounded-md">
+                <a href="/admin/logs.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="file-text" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> System Logs
                 </a>
-                <div class="border-t border-gray-200 my-2"></div>
-                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
+                <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>

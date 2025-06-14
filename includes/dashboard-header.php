@@ -323,8 +323,8 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                 </div>
                 
                 <!-- User Dropdown -->
-                <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                    <button @click="open = !open" class="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 transition-colors duration-200" aria-label="User menu">
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" @mouseenter="open = true" class="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" aria-label="User menu">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-sm font-bold">
                             <?= substr($user['name'], 0, 1) ?>
                         </div>
@@ -340,7 +340,15 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                          x-transition:leave-start="transform opacity-100 scale-100"
                          x-transition:leave-end="transform opacity-0 scale-95"
                          class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
-                         style="display: none;">
+                         x-cloak
+                         @mouseenter="open = true"
+                         @mouseleave="open = false"
+                         role="menu"
+                         aria-orientation="vertical"
+                         aria-labelledby="user-menu-button"
+                         tabindex="-1"
+                         x-ref="dropdown"
+                         @keydown.escape.window="open = false">
                         <!-- Token Count -->
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                             <div class="flex items-center justify-between">
@@ -375,20 +383,20 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                                 </div>
                             </div>
                             
-                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-user mr-2 w-4 text-center"></i> View Profile
                             </a>
-                            <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-moon mr-2 w-4 text-center"></i> Dark Mode
                             </button>
-                            <a href="help.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="help.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-question-circle mr-2 w-4 text-center"></i> Help & Support
                             </a>
-                            <a href="#" id="feedback-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="#" id="feedback-btn" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-comment-dots mr-2 w-4 text-center"></i> Give Feedback
                             </a>
-                            <div class="border-t border-gray-100 my-1"></div>
-                            <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                            <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                            <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-sign-out-alt mr-2 w-4 text-center"></i> Sign Out
                             </a>
                         </div>

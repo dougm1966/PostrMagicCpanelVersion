@@ -186,46 +186,46 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white">Account Information</h3>
                     </div>
-                    <form method="POST" class="p-6 space-y-4">
+                    <form method="POST" class="p-6 space-y-8">
                         <input type="hidden" name="action" value="update_profile">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
-                                <input type="text" id="username" name="username" value="<?= htmlspecialchars($currentUser['username']) ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username</label>
+                                <input type="text" id="username" name="username" value="<?= htmlspecialchars($currentUser['username']) ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                             </div>
                             
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
-                                <input type="email" id="email" name="email" value="<?= htmlspecialchars($currentUser['email']) ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" value="<?= htmlspecialchars($currentUser['email']) ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                             </div>
                         </div>
                         
-                        <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                            <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4">Change Password</h4>
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                            <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-6">Change Password</h4>
                             
-                            <div class="space-y-4">
-                                <div>
-                                    <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current Password</label>
-                                    <input type="password" id="current_password" name="current_password" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                            <div class="space-y-6">
+                                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                    <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Password</label>
+                                    <input type="password" id="current_password" name="current_password" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                                 </div>
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="new_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password (optional)</label>
-                                        <input type="password" id="new_password" name="new_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                        <label for="new_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Password (optional)</label>
+                                        <input type="password" id="new_password" name="new_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                                     </div>
                                     
-                                    <div>
-                                        <label for="confirm_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm New Password</label>
-                                        <input type="password" id="confirm_password" name="confirm_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                        <label for="confirm_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm New Password</label>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 Update Profile
                             </button>
                         </div>
@@ -237,32 +237,36 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white">Admin Preferences</h3>
                     </div>
-                    <form method="POST" class="p-6 space-y-4">
+                    <form method="POST" class="p-6 space-y-8">
                         <input type="hidden" name="action" value="update_preferences">
                         
-                        <div class="space-y-4">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="email_notifications" name="email_notifications" <?= $preferences['email_notifications'] ? 'checked' : '' ?> class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                                <label for="email_notifications" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Email Notifications</label>
+                        <div class="space-y-6">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="email_notifications" name="email_notifications" <?= $preferences['email_notifications'] ? 'checked' : '' ?> class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <label for="email_notifications" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</label>
+                                </div>
                             </div>
                             
-                            <div class="flex items-center">
-                                <input type="checkbox" id="dark_mode" name="dark_mode" <?= $preferences['dark_mode'] ? 'checked' : '' ?> class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                                <label for="dark_mode" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Dark Mode by Default</label>
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="dark_mode" name="dark_mode" <?= $preferences['dark_mode'] ? 'checked' : '' ?> class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <label for="dark_mode" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Dark Mode by Default</label>
+                                </div>
                             </div>
                             
-                            <div>
-                                <label for="dashboard_layout" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dashboard Layout</label>
-                                <select id="dashboard_layout" name="dashboard_layout" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="dashboard_layout" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dashboard Layout</label>
+                                <select id="dashboard_layout" name="dashboard_layout" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                                     <option value="default" <?= $preferences['dashboard_layout'] === 'default' ? 'selected' : '' ?>>Default</option>
                                     <option value="compact" <?= $preferences['dashboard_layout'] === 'compact' ? 'selected' : '' ?>>Compact</option>
                                     <option value="expanded" <?= $preferences['dashboard_layout'] === 'expanded' ? 'selected' : '' ?>>Expanded</option>
                                 </select>
                             </div>
                             
-                            <div>
-                                <label for="items_per_page" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Items Per Page</label>
-                                <select id="items_per_page" name="items_per_page" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="items_per_page" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Items Per Page</label>
+                                <select id="items_per_page" name="items_per_page" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                                     <option value="10" <?= $preferences['items_per_page'] == 10 ? 'selected' : '' ?>>10</option>
                                     <option value="20" <?= $preferences['items_per_page'] == 20 ? 'selected' : '' ?>>20</option>
                                     <option value="50" <?= $preferences['items_per_page'] == 50 ? 'selected' : '' ?>>50</option>
@@ -271,8 +275,8 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                             </div>
                         </div>
                         
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                                 Save Preferences
                             </button>
                         </div>

@@ -133,22 +133,22 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
             <div class="p-6">
                 <?php if ($current_tab === 'general'): ?>
                 <!-- General Settings -->
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-8">
                     <input type="hidden" name="tab" value="general">
                     
-                    <div>
-                        <label for="site_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Name</label>
-                        <input type="text" id="site_name" name="site_name" value="PostrMagic" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="site_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Site Name</label>
+                        <input type="text" id="site_name" name="site_name" value="PostrMagic" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <label for="site_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Site Description</label>
-                        <textarea id="site_description" name="site_description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">Create amazing event posters and manage your events with ease.</textarea>
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="site_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Site Description</label>
+                        <textarea id="site_description" name="site_description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">Create amazing event posters and manage your events with ease.</textarea>
                     </div>
                     
-                    <div>
-                        <label for="timezone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Default Timezone</label>
-                        <select id="timezone" name="timezone" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="timezone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Default Timezone</label>
+                        <select id="timezone" name="timezone" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                             <option value="UTC">UTC</option>
                             <option value="America/New_York">Eastern Time</option>
                             <option value="America/Chicago">Central Time</option>
@@ -157,8 +157,8 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                         </select>
                     </div>
                     
-                    <div>
-                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="pt-4">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Save General Settings
                         </button>
                     </div>
@@ -166,26 +166,28 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
 
                 <?php elseif ($current_tab === 'api'): ?>
                 <!-- API Settings -->
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-8">
                     <input type="hidden" name="tab" value="api">
                     
-                    <div class="flex items-center">
-                        <input type="checkbox" id="api_enabled" name="api_enabled" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                        <label for="api_enabled" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Enable API Access</label>
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="api_enabled" name="api_enabled" checked class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            <label for="api_enabled" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Enable API Access</label>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label for="rate_limit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rate Limit (requests per hour)</label>
-                        <input type="number" id="rate_limit" name="rate_limit" value="1000" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="rate_limit" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rate Limit (requests per hour)</label>
+                        <input type="number" id="rate_limit" name="rate_limit" value="1000" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-6">
                         <h4 class="text-sm font-medium text-blue-900 dark:text-blue-300">API Documentation</h4>
-                        <p class="mt-1 text-sm text-blue-700 dark:text-blue-400">API endpoints are available at <code>/api/v1/</code>. Generate API keys in user profiles.</p>
+                        <p class="mt-2 text-sm text-blue-700 dark:text-blue-400">API endpoints are available at <code>/api/v1/</code>. Generate API keys in user profiles.</p>
                     </div>
                     
-                    <div>
-                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="pt-4">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Save API Settings
                         </button>
                     </div>
@@ -193,31 +195,31 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
 
                 <?php elseif ($current_tab === 'email'): ?>
                 <!-- Email Settings -->
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-8">
                     <input type="hidden" name="tab" value="email">
                     
-                    <div>
-                        <label for="smtp_host" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Host</label>
-                        <input type="text" id="smtp_host" name="smtp_host" placeholder="smtp.gmail.com" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="smtp_host" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SMTP Host</label>
+                        <input type="text" id="smtp_host" name="smtp_host" placeholder="smtp.gmail.com" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <label for="smtp_port" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Port</label>
-                        <input type="number" id="smtp_port" name="smtp_port" value="587" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="smtp_port" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SMTP Port</label>
+                        <input type="number" id="smtp_port" name="smtp_port" value="587" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <label for="smtp_username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Username</label>
-                        <input type="text" id="smtp_username" name="smtp_username" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="smtp_username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SMTP Username</label>
+                        <input type="text" id="smtp_username" name="smtp_username" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <label for="smtp_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">SMTP Password</label>
-                        <input type="password" id="smtp_password" name="smtp_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="smtp_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">SMTP Password</label>
+                        <input type="password" id="smtp_password" name="smtp_password" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="pt-4">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Save Email Settings
                         </button>
                     </div>
@@ -225,49 +227,49 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
 
                 <?php elseif ($current_tab === 'integrations'): ?>
                 <!-- Integrations Settings -->
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-8">
                     <input type="hidden" name="tab" value="integrations">
                     
-                    <div class="space-y-4">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Third-party Integrations</h3>
+                    <div class="space-y-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Third-party Integrations</h3>
                         
                         <!-- Social Media Integrations -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                            <h4 class="font-medium text-gray-900 dark:text-white">Social Media</h4>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center justify-between">
+                        <div class="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-4">Social Media</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between py-2">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">Facebook Integration</span>
-                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700">Configure</button>
+                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">Configure</button>
                                 </div>
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between py-2">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">Twitter Integration</span>
-                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700">Configure</button>
+                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">Configure</button>
                                 </div>
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between py-2">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">Instagram Integration</span>
-                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700">Configure</button>
+                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">Configure</button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Payment Integrations -->
-                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
-                            <h4 class="font-medium text-gray-900 dark:text-white">Payment Processing</h4>
-                            <div class="mt-2 space-y-2">
-                                <div class="flex items-center justify-between">
+                        <div class="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-6">
+                            <h4 class="font-medium text-gray-900 dark:text-white mb-4">Payment Processing</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between py-2">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">Stripe</span>
-                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700">Configure</button>
+                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">Configure</button>
                                 </div>
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between py-2">
                                     <span class="text-sm text-gray-700 dark:text-gray-300">PayPal</span>
-                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700">Configure</button>
+                                    <button type="button" class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">Configure</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div>
-                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="pt-4">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Save Integration Settings
                         </button>
                     </div>
@@ -275,26 +277,28 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
 
                 <?php elseif ($current_tab === 'security'): ?>
                 <!-- Security Settings -->
-                <form method="POST" class="space-y-6">
+                <form method="POST" class="space-y-8">
                     <input type="hidden" name="tab" value="security">
                     
-                    <div class="flex items-center">
-                        <input type="checkbox" id="two_factor_required" name="two_factor_required" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                        <label for="two_factor_required" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Require Two-Factor Authentication</label>
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="two_factor_required" name="two_factor_required" class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            <label for="two_factor_required" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Require Two-Factor Authentication</label>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label for="session_timeout" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Session Timeout (minutes)</label>
-                        <input type="number" id="session_timeout" name="session_timeout" value="30" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="session_timeout" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Session Timeout (minutes)</label>
+                        <input type="number" id="session_timeout" name="session_timeout" value="30" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4">
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-6">
                         <h4 class="text-sm font-medium text-yellow-900 dark:text-yellow-300">Security Notice</h4>
-                        <p class="mt-1 text-sm text-yellow-700 dark:text-yellow-400">Changes to security settings will affect all users. Make sure to communicate changes to your team.</p>
+                        <p class="mt-2 text-sm text-yellow-700 dark:text-yellow-400">Changes to security settings will affect all users. Make sure to communicate changes to your team.</p>
                     </div>
                     
-                    <div>
-                        <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="pt-4">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                             Save Security Settings
                         </button>
                     </div>

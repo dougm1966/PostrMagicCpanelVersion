@@ -81,20 +81,26 @@
     <!-- Sidebar Footer with User Profile Popup -->
     <div class="px-4 py-4 border-t border-gray-200 relative sticky bottom-0 bg-white dark:bg-gray-900 z-10">
         <!-- User Profile Button -->
-        <button id="profile-menu-button" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-            <div class="flex items-center">
-                <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="Profile" class="h-8 w-8 rounded-full object-cover border border-gray-200 mr-2" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($user['name']) ?>&background=5B73F0&color=fff'">
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-medium text-gray-900 truncate"><?= htmlspecialchars($user['name']) ?></h3>
-                    <p class="text-xs text-gray-500 truncate"><?= htmlspecialchars($user['email']) ?></p>
+        <div class="relative">
+            <button id="profile-menu-button" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" 
+                    onclick="toggleProfileMenu()" 
+                    aria-expanded="false" 
+                    aria-controls="profile-menu">
+                <div class="flex items-center">
+                    <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="Profile" class="h-8 w-8 rounded-full object-cover border border-gray-200 mr-2" 
+                         onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($user['name']) ?>&background=5B73F0&color=fff'">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-sm font-medium text-gray-900 truncate"><?= htmlspecialchars($user['name']) ?></h3>
+                        <p class="text-xs text-gray-500 truncate"><?= htmlspecialchars($user['email']) ?></p>
+                    </div>
                 </div>
-            </div>
-            <i data-lucide="chevron-up" class="h-4 w-4 text-gray-500 transition-transform duration-200" id="profile-chevron"></i>
-        </button>
-        
-        <!-- User Profile Popup (Hidden by default) -->
-        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50">
+                <i data-lucide="chevron-up" class="h-4 w-4 text-gray-500 transition-transform duration-200" id="profile-chevron"></i>
+            </button>
+            
+            <!-- User Profile Popup (Hidden by default) -->
+            <div id="profile-menu" 
+                 class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50"
+                 onmouseleave="closeProfileMenu()">
             <!-- Token Count Section -->
             <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between mb-1">
@@ -147,49 +153,59 @@
             }
         });
     });
-    
-    // Show/hide sidebar on mobile
-    document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-    });
-    
+
     // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', function(event) {
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebar-toggle');
         
-        if (window.innerWidth < 768 && 
-            sidebar && 
-            sidebarToggle && 
-            !sidebar.contains(e.target) && 
-            !sidebarToggle.contains(e.target)) {
-            sidebar.classList.remove('open');
+        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target) && window.innerWidth < 1024) {
+            sidebar.classList.add('hidden');
         }
     });
-    
-    // Toggle profile menu dropdown
-    document.getElementById('profile-menu-button')?.addEventListener('click', () => {
+
+    // Toggle profile menu on click
+    function toggleProfileMenu() {
         const profileMenu = document.getElementById('profile-menu');
-        const chevron = document.getElementById('profile-chevron');
+        const isOpen = !profileMenu.classList.contains('hidden');
         
+        // Close all other open menus first
+        document.querySelectorAll('.profile-menu').forEach(menu => {
+            if (menu !== profileMenu) menu.classList.add('hidden');
+        });
+        
+        // Toggle current menu
         profileMenu.classList.toggle('hidden');
+        const chevron = document.getElementById('profile-chevron');
+        chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
         
-        if (chevron) {
-            chevron.style.transform = profileMenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        // Update aria-expanded
+        const button = document.getElementById('profile-menu-button');
+        button.setAttribute('aria-expanded', !isOpen);
+    }
+    
+    // Close profile menu when mouse leaves
+    function closeProfileMenu() {
+        const profileMenu = document.getElementById('profile-menu');
+        profileMenu.classList.add('hidden');
+        document.getElementById('profile-chevron').style.transform = 'rotate(0deg)';
+        document.getElementById('profile-menu-button').setAttribute('aria-expanded', 'false');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const profileMenu = document.getElementById('profile-menu');
+        const profileButton = document.getElementById('profile-menu-button');
+        
+        if (!profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
+            closeProfileMenu();
         }
     });
     
-    // Close profile menu when clicking elsewhere
-    document.addEventListener('click', (e) => {
-        const profileMenu = document.getElementById('profile-menu');
-        const profileMenuButton = document.getElementById('profile-menu-button');
-        
-        if (profileMenu && 
-            profileMenuButton && 
-            !profileMenu.contains(e.target) && 
-            !profileMenuButton.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-            document.getElementById('profile-chevron').style.transform = 'rotate(0deg)';
+    // Close menu when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeProfileMenu();
         }
     });
 </script>

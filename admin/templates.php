@@ -136,21 +136,21 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     <?= $editing_template ? 'Edit Template' : 'Create New Template' ?>
                 </h3>
             </div>
-            <form method="POST" class="p-6 space-y-4">
+            <form method="POST" class="p-6 space-y-8">
                 <input type="hidden" name="action" value="<?= $editing_template ? 'update' : 'create' ?>">
                 <?php if ($editing_template): ?>
                 <input type="hidden" name="id" value="<?= $editing_template['id'] ?>">
                 <?php endif; ?>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Template Name</label>
-                        <input type="text" id="name" name="name" value="<?= htmlspecialchars($editing_template['name'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Template Name</label>
+                        <input type="text" id="name" name="name" value="<?= htmlspecialchars($editing_template['name'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                     </div>
                     
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Template Type</label>
-                        <select id="type" name="type" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                    <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                        <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Template Type</label>
+                        <select id="type" name="type" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                             <option value="">Select Type</option>
                             <option value="welcome" <?= ($editing_template['type'] ?? '') === 'welcome' ? 'selected' : '' ?>>Welcome Email</option>
                             <option value="password_reset" <?= ($editing_template['type'] ?? '') === 'password_reset' ? 'selected' : '' ?>>Password Reset</option>
@@ -161,27 +161,29 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     </div>
                 </div>
                 
-                <div>
-                    <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Subject</label>
-                    <input type="text" id="subject" name="subject" value="<?= htmlspecialchars($editing_template['subject'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white">
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Subject</label>
+                    <input type="text" id="subject" name="subject" value="<?= htmlspecialchars($editing_template['subject'] ?? '') ?>" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
                 </div>
                 
-                <div>
-                    <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Content</label>
-                    <textarea id="content" name="content" rows="10" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"><?= htmlspecialchars($editing_template['content'] ?? '') ?></textarea>
-                    <p class="mt-1 text-sm text-gray-500">Use {{variable_name}} for dynamic content. Available variables: {{user_name}}, {{site_name}}, {{event_name}}, {{event_date}}</p>
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Content</label>
+                    <textarea id="content" name="content" rows="10" required class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3"><?= htmlspecialchars($editing_template['content'] ?? '') ?></textarea>
+                    <p class="mt-2 text-sm text-gray-500">Use {{variable_name}} for dynamic content. Available variables: {{user_name}}, {{site_name}}, {{event_name}}, {{event_date}}, {{event_location}}, {{event_url}}</p>
                 </div>
                 
-                <div class="flex items-center">
-                    <input type="checkbox" id="is_active" name="is_active" <?= ($editing_template['is_active'] ?? 1) ? 'checked' : '' ?> class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                    <label for="is_active" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Active Template</label>
+                <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="is_active" name="is_active" <?= ($editing_template['is_active'] ?? 1) ? 'checked' : '' ?> class="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                        <label for="is_active" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">Active Template</label>
+                    </div>
                 </div>
                 
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="cancelEdit()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="cancelEdit()" class="bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-6 py-3 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
                         Cancel
                     </button>
-                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <?= $editing_template ? 'Update Template' : 'Create Template' ?>
                     </button>
                 </div>
