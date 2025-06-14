@@ -209,14 +209,15 @@ require_once 'includes/dashboard-header.php';
             
             <!-- Action Buttons -->
             <div class="flex flex-wrap gap-2">
-                <a href="event-detail.php?id=<?= $event['id'] ?>" 
+                <a href="event-details.php?id=<?= $event['id'] ?>" 
                    class="flex-1 text-center px-3 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary/90 transition-colors duration-200">
                     View Details
                 </a>
-                <button class="px-3 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors duration-200"
-                        title="Edit Event">
+                <a href="event-creation.php?edit=<?= $event['id'] ?>" 
+                   class="px-3 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors duration-200"
+                   title="Edit Event">
                     <i class="fas fa-edit"></i>
-                </button>
+                </a>
                 <button class="px-3 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 transition-colors duration-200"
                         title="View Analytics">
                     <i class="fas fa-chart-bar"></i>
