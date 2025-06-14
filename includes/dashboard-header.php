@@ -34,7 +34,7 @@ $user = [
 $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : true; // Default to dark mode if no preference set
 ?>
 <!DOCTYPE html>
-<html lang="en" class="<?= $dark_mode ? 'dark' : '' ?>">
+<html lang="en" class="<?= $dark_mode ? 'dark' : '' ?>" x-data="{}">
 <head>
     <script>
         // Prevent flash of light mode by immediately setting the theme before any content loads
@@ -270,6 +270,14 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Alpine.js style to hide elements before initialization -->
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="font-sans bg-gray-100 overflow-x-hidden">
     <!-- Dashboard Header -->
@@ -323,8 +331,13 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                 </div>
                 
                 <!-- User Dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" @mouseenter="open = true" class="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" aria-label="User menu">
+                <div class="relative" x-data="{ open: false }" @click.outside="open = false" x-cloak>
+                    <button 
+                        @click="open = !open" 
+                        class="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+                        :aria-expanded="open"
+                        aria-label="User menu"
+                    >
                         <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-sm font-bold">
                             <?= substr($user['name'], 0, 1) ?>
                         </div>
@@ -341,14 +354,13 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                          x-transition:leave-end="transform opacity-0 scale-95"
                          class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                          x-cloak
-                         @mouseenter="open = true"
                          @mouseleave="open = false"
+                         x-ref="dropdown"
+                         @keydown.escape.window="open = false"
                          role="menu"
                          aria-orientation="vertical"
                          aria-labelledby="user-menu-button"
-                         tabindex="-1"
-                         x-ref="dropdown"
-                         @keydown.escape.window="open = false">
+                         tabindex="-1">
                         <!-- Token Count -->
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                             <div class="flex items-center justify-between">

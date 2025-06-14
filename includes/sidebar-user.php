@@ -99,8 +99,7 @@
             
             <!-- User Profile Popup (Hidden by default) -->
             <div id="profile-menu" 
-                 class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50"
-                 onmouseleave="closeProfileMenu()">
+                 class="hidden absolute bottom-full left-2 right-2 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg border border-gray-300 dark:border-gray-500 mb-2 z-50">
             <!-- Token Count Section -->
             <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between mb-1">
@@ -118,17 +117,17 @@
                 </div>
             </div>
             <div class="p-2">
-                <a href="user-profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary rounded-md">
+                <a href="user-profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="user" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> My Profile
                 </a>
-                <a href="settings.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary rounded-md">
+                <a href="settings.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="settings" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Settings
                 </a>
-                <a href="help.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary rounded-md">
+                <a href="help.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="help-circle" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Help & Support
                 </a>
-                <div class="border-t border-gray-200 my-2"></div>
-                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
+                <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>
@@ -184,7 +183,8 @@
         button.setAttribute('aria-expanded', !isOpen);
     }
     
-    // Close profile menu when mouse leaves
+    
+    // Close profile menu
     function closeProfileMenu() {
         const profileMenu = document.getElementById('profile-menu');
         profileMenu.classList.add('hidden');

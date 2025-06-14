@@ -130,7 +130,13 @@
         </div>
         
         <!-- Admin Profile Button -->
-        <button id="profile-menu-button" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+        <button 
+            id="profile-menu-button" 
+            onclick="toggleProfileMenu()" 
+            class="flex items-center w-full p-2 text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+            aria-haspopup="true"
+            aria-expanded="false"
+        >
             <div class="flex items-center">
                 <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="Profile" class="h-8 w-8 rounded-full object-cover border border-gray-200 mr-2" 
                      onerror="this.src='https://ui-avatars.com/api/?name=<?= urlencode($user['name']) ?>&background=5B73F0&color=fff'">
@@ -143,7 +149,26 @@
         </button>
         
         <!-- Admin Profile Popup (Hidden by default) -->
-        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50">
+        <div 
+            id="profile-menu" 
+            class="absolute bottom-full left-2 right-2 mb-2 hidden bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg border border-gray-300 dark:border-gray-500 z-50"
+        >
+            <!-- Token Count Section -->
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Available Tokens</span>
+                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300">
+                        <i data-lucide="plus-circle" class="h-4 w-4"></i>
+                    </button>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-2">
+                    <div class="bg-purple-600 dark:bg-purple-500 h-2.5 rounded-full" style="width: 70%"></div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-600 dark:text-gray-400">1,250 tokens</span>
+                    <a href="#" class="text-purple-600 dark:text-purple-400 hover:underline">Get more</a>
+                </div>
+            </div>
             <div class="p-2">
                 <a href="/admin/profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="user" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Admin Profile
@@ -155,7 +180,7 @@
                     <i data-lucide="file-text" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> System Logs
                 </a>
                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>
@@ -200,29 +225,49 @@
         }
     });
     
-    // Toggle profile menu dropdown
-    document.getElementById('profile-menu-button')?.addEventListener('click', () => {
+    // Toggle profile menu on click
+    function toggleProfileMenu() {
         const profileMenu = document.getElementById('profile-menu');
-        const chevron = document.getElementById('profile-chevron');
+        const isOpen = !profileMenu.classList.contains('hidden');
         
+        // Close all other open menus first
+        document.querySelectorAll('.profile-menu').forEach(menu => {
+            if (menu !== profileMenu) menu.classList.add('hidden');
+        });
+        
+        // Toggle current menu
         profileMenu.classList.toggle('hidden');
+        const chevron = document.getElementById('profile-chevron');
+        chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
         
-        if (chevron) {
-            chevron.style.transform = profileMenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        // Update aria-expanded
+        const button = document.getElementById('profile-menu-button');
+        button.setAttribute('aria-expanded', !isOpen);
+    }
+    
+    
+    // Close profile menu
+    function closeProfileMenu() {
+        const profileMenu = document.getElementById('profile-menu');
+        profileMenu.classList.add('hidden');
+        document.getElementById('profile-chevron').style.transform = 'rotate(0deg)';
+        document.getElementById('profile-menu-button').setAttribute('aria-expanded', 'false');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const profileMenu = document.getElementById('profile-menu');
+        const profileButton = document.getElementById('profile-menu-button');
+        
+        if (!profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
+            closeProfileMenu();
         }
     });
     
-    // Close profile menu when clicking elsewhere
-    document.addEventListener('click', (e) => {
-        const profileMenu = document.getElementById('profile-menu');
-        const profileMenuButton = document.getElementById('profile-menu-button');
-        
-        if (profileMenu && 
-            profileMenuButton && 
-            !profileMenu.contains(e.target) && 
-            !profileMenuButton.contains(e.target)) {
-            profileMenu.classList.add('hidden');
-            document.getElementById('profile-chevron').style.transform = 'rotate(0deg)';
+    // Close menu when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeProfileMenu();
         }
     });
 </script>
