@@ -297,6 +297,21 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                     <i class="fas fa-sun text-yellow-500 hidden dark:block"></i>
                 </button>
                 
+                <!-- Quick Role Switch (Development) -->
+                <?php if (APP_DEBUG): ?>
+                <div class="flex items-center gap-1 text-xs bg-blue-50 px-2 py-1 rounded border">
+                    <span class="text-gray-600">View:</span>
+                    <?php 
+                    $current_role = $_SESSION['display_role'] ?? $_SESSION['user_role'] ?? 'user';
+                    $switch_role = $current_role === 'admin' ? 'user' : 'admin';
+                    ?>
+                    <a href="/switch_role.php?role=<?= $switch_role ?>" 
+                       class="font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                        <?= ucfirst($current_role) ?> → <?= ucfirst($switch_role) ?>
+                    </a>
+                </div>
+                <?php endif; ?>
+                
                 <!-- Notifications -->
                 <div class="relative">
                     <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 relative" aria-label="Notifications" title="Notifications">

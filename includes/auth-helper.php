@@ -16,6 +16,13 @@ function isAdmin() {
     if (!isLoggedIn()) {
         return false;
     }
+    
+    // Check for display role override (for development/testing)
+    if (isset($_SESSION['display_role'])) {
+        return $_SESSION['display_role'] === 'admin';
+    }
+    
+    // Default to actual user role
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 }
 
