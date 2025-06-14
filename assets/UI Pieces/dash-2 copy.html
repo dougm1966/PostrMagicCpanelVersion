@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angle - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col">
+      <div class="p-6 border-b border-gray-100">
+        <a href="#" class="text-2xl font-bold text-indigo-600">angle</a>
+      </div>
+      
+      <nav class="flex-1 p-4">
+        <div class="mb-6">
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Main</p>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md">
+                <i class="fas fa-home w-5 h-5 mr-2"></i>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-layer-group w-5 h-5 mr-2"></i>
+                Projects
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-puzzle-piece w-5 h-5 mr-2"></i>
+                Components
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-palette w-5 h-5 mr-2"></i>
+                Templates
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="mb-6">
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Resources</p>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-book w-5 h-5 mr-2"></i>
+                Documentation
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-video w-5 h-5 mr-2"></i>
+                Tutorials
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-md">
+                <i class="fas fa-question-circle w-5 h-5 mr-2"></i>
+                Support
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="p-4 border-t border-gray-100">
+        <div class="flex items-center">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-8 h-8 rounded-full mr-3">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate">Alex Johnson</p>
+            <p class="text-xs text-gray-500 truncate">alex@company.com</p>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Navigation -->
+      <header class="bg-white border-b border-gray-100 py-4 px-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-lg font-semibold">Dashboard</h1>
+            <p class="text-sm text-gray-500">Welcome to your new project</p>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <button class="text-gray-500 hover:text-gray-700">
+              <i class="fas fa-bell"></i>
+            </button>
+            <button class="px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 flex items-center">
+              <i class="fas fa-plus mr-2"></i> New Project
+            </button>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Main Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+        <div class="mb-8">
+          <div class="bg-indigo-600 text-white p-6 rounded-lg">
+            <div class="flex items-start justify-between">
+              <div>
+                <h2 class="text-xl font-semibold mb-2">🎉 Project created successfully!</h2>
+                <p class="mb-4">Your dashboard project is ready. Here are some next steps to get started.</p>
+                <button class="px-4 py-2 bg-white text-indigo-600 rounded-md font-medium hover:bg-indigo-50">
+                  View project
+                </button>
+              </div>
+              <button class="text-indigo-200 hover:text-white">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-8">
+          <h2 class="text-lg font-semibold mb-4">Getting Started</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+              <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-book text-indigo-600"></i>
+              </div>
+              <h3 class="font-medium mb-2">Read the docs</h3>
+              <p class="text-sm text-gray-600 mb-4">Explore our documentation to learn how to use Angle components.</p>
+              <a href="#" class="text-sm text-indigo-600 font-medium hover:text-indigo-700">View documentation →</a>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+              <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-code text-indigo-600"></i>
+              </div>
+              <h3 class="font-medium mb-2">Browse components</h3>
+              <p class="text-sm text-gray-600 mb-4">Discover our library of ready-to-use UI components.</p>
+              <a href="#" class="text-sm text-indigo-600 font-medium hover:text-indigo-700">View components →</a>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
+              <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-users text-indigo-600"></i>
+              </div>
+              <h3 class="font-medium mb-2">Invite team members</h3>
+              <p class="text-sm text-gray-600 mb-4">Collaborate with your team by inviting them to your project.</p>
+              <a href="#" class="text-sm text-indigo-600 font-medium hover:text-indigo-700">Invite team →</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold">Your Projects</h2>
+            <button class="text-sm text-indigo-600 font-medium hover:text-indigo-700">View all</button>
+          </div>
+          
+          <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                  <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-md flex items-center justify-center text-indigo-600">
+                        <i class="fas fa-columns"></i>
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">My Awesome Project</div>
+                        <div class="text-sm text-gray-500">Dashboard</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">Web Application</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Just now
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a href="#" class="text-indigo-600 hover:text-indigo-700">Edit</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

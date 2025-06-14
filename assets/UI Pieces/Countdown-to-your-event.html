@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Progress Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --font-main: 'Roboto', sans-serif;
+            --bg-page: #f8f9fa;
+            --bg-component: #ffffff;
+            --bg-block: rgba(0, 0, 0, 0.02);
+            --bg-progress: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --text-heading: #004085;
+            --text-muted: #6c757d;
+            --text-accent: #007bff;
+            --border-color: #dee2e6;
+            --border-radius: 0.25rem;
+            --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+            --shadow-inset: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            --transition-normal: 0.2s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            display: grid;
+            place-items: center;
+            align-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .dashboard-project-progress {
+            background-color: var(--bg-component);
+            max-width: 550px;
+            width: 100%;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        }
+
+        .dashboard-project-progress:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--text-heading);
+            margin-bottom: 25px;
+        }
+
+        .progress-bar-container {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .progress-bar-label span {
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: var(--bg-progress);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-inset);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--text-accent);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            transition: width 0.8s ease-in-out;
+        }
+
+        .project-stats-grid {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .project-stat-item {
+            background-color: var(--bg-block);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            border: 1px solid rgba(222, 226, 230, 0.5);
+            transition: all 0.15s;
+        }
+
+        .project-stat-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--text-accent);
+        }
+
+        .project-stat-item i {
+            font-size: 1.6rem;
+            color: var(--text-accent);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .project-manager-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+        }
+
+        .project-manager-info strong {
+            color: var(--text-heading);
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-project-progress {
+                padding: 15px;
+            }
+            .project-stats-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-project-progress animate__animated animate__pulse" style="animation-duration: 1.2s;">
+        <h3>Project Alpha Status</h3>
+        <div class="progress-bar-container">
+            <div class="progress-bar-label">Overall Progress: <span>75%</span></div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill animate__animated animate__slideInLeft" style="width: 75%; animation-duration: 1.5s;"></div>
+            </div>
+        </div>
+        <div class="project-stats-grid">
+            <div class="project-stat-item animate__animated animate__bounceIn" style="animation-delay: 0.2s;">
+                <i class="fas fa-tasks"></i>
+                <span class="stat-value">30/40</span>
+                <span class="stat-label">Tasks Done</span>
+            </div>
+            <div class="project-stat-item animate__animated animate__bounceIn" style="animation-delay: 0.3s;">
+                <i class="far fa-calendar-alt"></i>
+                <span class="stat-value">12 Days</span>
+                <span class="stat-label">Remaining</span>
+            </div>
+            <div class="project-stat-item animate__animated animate__bounceIn" style="animation-delay: 0.4s;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="stat-value">2</span>
+                <span class="stat-label">Alerts</span>
+            </div>
+        </div>
+        <p class="project-manager-info">Manager: <strong>Sarah Miller</strong></p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            new WOW().init();
+        });
+    </script>
+</body>
+</html>

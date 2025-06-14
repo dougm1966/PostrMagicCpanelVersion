@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .card {
+      position: relative;
+      z-index: 0;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(to bottom right, #525252, transparent, #262626);
+      border-radius: 0.75rem;
+      z-index: -1;
+    }
+    .card-content {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: #171717;
+    }
+    .sidebar-item {
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+    .sidebar-item:hover {
+      background-color: rgba(38, 38, 38, 0.8);
+    }
+    .sidebar-item.active {
+      background-color: rgba(59, 130, 246, 0.1);
+      border-left: 2px solid #3b82f6;
+    }
+  </style>
+</head>
+<body class="bg-neutral-950 text-white">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-neutral-900 border-r border-neutral-800 p-4 hidden md:block">
+      <!-- Logo -->
+      <div class="flex items-center mb-8 pl-2">
+        <div class="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+          </svg>
+        </div>
+        <span class="text-lg font-semibold">SecureAdmin</span>
+      </div>
+      
+      <!-- Navigation -->
+      <nav class="space-y-1">
+        <a href="#" class="sidebar-item active flex items-center px-3 py-2.5 text-sm font-medium text-blue-500 pl-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="#" class="sidebar-item flex items-center px-3 py-2.5 text-sm font-medium text-neutral-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          Users
+        </a>
+        <a href="#" class="sidebar-item flex items-center px-3 py-2.5 text-sm font-medium text-neutral-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Security
+        </a>
+        <a href="#" class="sidebar-item flex items-center px-3 py-2.5 text-sm font-medium text-neutral-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Settings
+        </a>
+        <a href="#" class="sidebar-item flex items-center px-3 py-2.5 text-sm font-medium text-neutral-400 hover:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          Analytics
+        </a>
+      </nav>
+      
+      <!-- User Profile -->
+      <div class="mt-auto pt-8">
+        <div class="sidebar-item flex items-center px-3 py-3">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80" alt="User" class="w-8 h-8 rounded-full mr-3">
+          <div>
+            <div class="text-sm font-medium">David Thompson</div>
+            <div class="text-xs text-neutral-500">Administrator</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Mobile Sidebar Toggle -->
+    <div class="md:hidden absolute top-4 left-4 z-50">
+      <button class="p-2 rounded-md bg-neutral-800 text-neutral-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Top Header -->
+      <header class="bg-neutral-900 shadow-md py-4 px-6">
+        <div class="flex justify-between items-center">
+          <h1 class="text-xl font-semibold">Dashboard Overview</h1>
+          <div class="flex items-center space-x-4">
+            <button class="p-2 rounded-full bg-neutral-800 text-neutral-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+            <button class="p-2 rounded-full bg-neutral-800 text-neutral-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Dashboard Content -->
+      <div class="p-6">
+        <!-- Stats Cards Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <!-- Active Users Card -->
+          <div class="card">
+            <div class="card-content shadow-lg p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-neutral-400 text-sm">Active Users</p>
+                  <h3 class="text-2xl font-bold text-white mt-1">2,542</h3>
+                  <p class="text-green-500 text-xs mt-2 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    12.5% increase
+                  </p>
+                </div>
+                <div class="p-3 bg-blue-600/10 rounded-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Security Incidents Card -->
+          <div class="card">
+            <div class="card-content shadow-lg p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-neutral-400 text-sm">Security Incidents</p>
+                  <h3 class="text-2xl font-bold text-white mt-1">3</h3>
+                  <p class="text-red-500 text-xs mt-2 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    2 new alerts
+                  </p>
+                </div>
+                <div class="p-3 bg-red-600/10 rounded-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- System Health Card -->
+          <div class="card">
+            <div class="card-content shadow-lg p-5">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-neutral-400 text-sm">System Health</p>
+                  <h3 class="text-2xl font-bold text-white mt-1">98.3%</h3>
+                  <p class="text-green-500 text-xs mt-2 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    Optimal
+                  </p>
+                </div>
+                <div class="p-3 bg-green-600/10 rounded-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Recent Activity -->
+          <div class="card lg:col-span-2">
+            <div class="card-content shadow-lg">
+              <div class="p-5 border-b border-neutral-800">
+                <h3 class="font-medium text-white">Recent Activity</h3>
+              </div>
+              <div class="p-5">
+                <div class="space-y-5">
+                  <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center mr-3 flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-neutral-300 text-sm"><span class="font-medium text-white">Michael Chen</span> logged in from a new device</p>
+                      <p class="text-neutral-500 text-xs mt-1">10 minutes ago</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-yellow-600/20 flex items-center justify-center mr-3 flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-neutral-300 text-sm">Security alert: <span class="font-medium text-white">Failed login attempts</span> detected</p>
+                      <p class="text-neutral-500 text-xs mt-1">25 minutes ago</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-green-600/20 flex items-center justify-center mr-3 flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-neutral-300 text-sm"><span class="font-medium text-white">Sarah Johnson</span> completed 2FA setup</p>
+                      <p class="text-neutral-500 text-xs mt-1">1 hour ago</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center mr-3 flex-shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-neutral-300 text-sm">System maintenance scheduled for <span class="font-medium text-white">July 15, 2023</span></p>
+                      <p class="text-neutral-500 text-xs mt-1">2 hours ago</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Security Status -->
+          <div class="card">
+            <div class="card-content shadow-lg">
+              <div class="p-5 border-b border-neutral-800">
+                <h3 class="font-medium text-white">Security Status</h3>
+              </div>
+              <div class="p-5">
+                <div class="mb-5">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-neutral-400">Overall Score</span>
+                    <span class="text-sm font-medium text-white">85/100</span>
+                  </div>
+                  <div class="w-full bg-neutral-800 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                  </div>
+                </div>
+                
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span class="text-sm text-neutral-300">2FA Enabled</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span class="text-sm text-neutral-300">Password Updated</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      <span class="text-sm text-neutral-300">Recovery Email</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <span class="text-sm text-neutral-300">Device Trust</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <button class="w-full mt-5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition text-sm font-medium">
+                  View Security Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

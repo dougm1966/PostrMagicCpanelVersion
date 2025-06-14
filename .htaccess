@@ -44,7 +44,7 @@ RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 # Disable directory browsing
 Options -Indexes
 
-# Protect sensitive files
+# Protect sensitive files and directories
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
@@ -54,3 +54,9 @@ Options -Indexes
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# Prevent direct access to includes directory
+<Directory "includes">
+    Order allow,deny
+    Deny from all
+</Directory>

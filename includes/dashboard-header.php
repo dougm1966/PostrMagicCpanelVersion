@@ -1,0 +1,358 @@
+<?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Define base URL
+$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+define('BASE_URL', $base_url);
+
+// Include config
+require_once __DIR__ . '/config.php';
+
+// Set page title
+$page_title = isset($page_title) ? $page_title . ' - PostrMagic' : 'PostrMagic Dashboard';
+
+// Development toggle for admin/user views
+if (isset($_GET['admin'])) {
+    $_SESSION['is_admin'] = (bool)$_GET['admin'];
+}
+
+// Determine if user is admin (this would normally come from auth system)
+$is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : false;
+
+// Mock user data (would normally come from database)
+$user = [
+    'name' => 'Alex Johnson',
+    'email' => 'alex@example.com',
+    'avatar' => 'https://randomuser.me/api/portraits/men/32.jpg',
+    'notifications' => 3
+];
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?= htmlspecialchars($page_title) ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#5B73F0',
+              secondary: '#54E8CC',
+              accent: '#54E8CC',
+              dark: '#0F172A',
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Custom CSS including clamp for responsive typography -->
+    <style>
+      /* CSS for better scrolling performance */
+      html {
+        scroll-behavior: smooth;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      body {
+        overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      /* Dark mode styles */
+      .dark body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      
+      .dark .bg-white {
+        background-color: #1e293b !important;
+      }
+      
+      .dark .text-gray-900 {
+        color: #e2e8f0 !important;
+      }
+      
+      .dark .text-gray-700 {
+        color: #cbd5e1 !important;
+      }
+      
+      .dark .text-gray-600 {
+        color: #94a3b8 !important;
+      }
+      
+      .dark .text-gray-500 {
+        color: #64748b !important;
+      }
+      
+      .dark .border-gray-200 {
+        border-color: #374151 !important;
+      }
+      
+      .dark .bg-gray-100 {
+        background-color: #374151 !important;
+      }
+      
+      .dark .bg-gray-50 {
+        background-color: #1f2937 !important;
+      }
+      
+      /* Dark mode for borders and shadows */
+      .dark .border-gray-100 {
+        border-color: #374151 !important;
+      }
+      
+      .dark .shadow-sm {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+      }
+      
+      /* Dark mode for hover states */
+      .dark .hover\:bg-gray-50:hover {
+        background-color: #374151 !important;
+      }
+      
+      .dark tr:hover {
+        background-color: #374151 !important;
+      }
+      
+      /* Dark mode for status badges */
+      .dark .bg-yellow-100 {
+        background-color: #451a03 !important;
+      }
+      
+      .dark .text-yellow-800 {
+        color: #fbbf24 !important;
+      }
+      
+      .dark .bg-green-100 {
+        background-color: #064e3b !important;
+      }
+      
+      .dark .text-green-800 {
+        color: #34d399 !important;
+      }
+      
+      .dark .bg-gray-100.text-gray-800 {
+        background-color: #374151 !important;
+        color: #d1d5db !important;
+      }
+      
+      /* Dark mode for cards and containers */
+      .dark .bg-white.rounded-lg {
+        background-color: #1e293b !important;
+        border-color: #374151 !important;
+      }
+      
+      /* Dark mode for sidebar profile button */
+      .dark #sidebar .hover\:bg-gray-100:hover {
+        background-color: #374151 !important;
+      }
+      
+      /* Dark mode for user dropdown menu */
+      .dark .bg-white.rounded-md.shadow-lg {
+        background-color: #1e293b !important;
+        border-color: #374151 !important;
+      }
+      
+      .dark .hover\:bg-gray-100:hover {
+        background-color: #374151 !important;
+      }
+      
+      .dark .hover\:bg-red-50:hover {
+        background-color: #7f1d1d !important;
+      }
+      
+      /* Dark mode for quick action descriptions */
+      .dark .text-xs.text-gray-500 {
+        color: #94a3b8 !important;
+      }
+      
+      /* Keep Quick Action titles dark in dark mode for contrast */
+      .dark .bg-blue-50 h3.text-sm.font-medium.text-gray-900,
+      .dark .bg-amber-50 h3.text-sm.font-medium.text-gray-900,
+      .dark .bg-green-50 h3.text-sm.font-medium.text-gray-900,
+      .dark .bg-purple-50 h3.text-sm.font-medium.text-gray-900 {
+        color: #111827 !important;
+      }
+      
+      /* Implement fluid typography with clamp() */
+      h1 {
+        font-size: clamp(1.5rem, 5vw, 2.25rem);
+      }
+      
+      h2 {
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+      }
+      
+      h3 {
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+      }
+      
+      p, .text-base {
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+      }
+      
+      .text-sm {
+        font-size: clamp(0.8rem, 1.2vw, 0.875rem);
+      }
+      
+      /* Sidebar styling */
+      .sidebar {
+        width: 280px;
+        transition: all 0.3s ease;
+      }
+      
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 240px;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 100%;
+          position: fixed;
+          z-index: 40;
+          transform: translateX(-100%);
+        }
+        
+        .sidebar.open {
+          transform: translateX(0);
+        }
+      }
+      
+      /* Beautiful shadow effect */
+      .beautiful-shadow {
+        box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.06), 
+                    0px 1px 1px -0.5px rgba(0,0,0,0.06), 
+                    0px 3px 3px -1.5px rgba(0,0,0,0.06), 
+                    0px 6px 6px -3px rgba(0,0,0,0.06), 
+                    0px 12px 12px -6px rgba(0,0,0,0.06), 
+                    0px 24px 24px -12px rgba(0,0,0,0.06);
+      }
+    </style>
+    
+    <!-- Original CSS will be gradually migrated -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css" />
+    <script src="<?= BASE_URL ?>assets/js/main.js" defer></script>
+    <script src="<?= BASE_URL ?>assets/js/dashboard.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="font-sans bg-gray-100 overflow-x-hidden">
+    <!-- Dashboard Header -->
+    <header class="w-full py-3 bg-white shadow-sm z-40 sticky top-0">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <!-- Left section with logo and toggle -->
+            <div class="flex items-center gap-4">
+                <button id="sidebar-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 lg:hidden" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars text-gray-700"></i>
+                </button>
+                <h1 class="text-primary font-bold text-xl"><a href="<?= BASE_URL ?>dashboard.php">PostrMagic</a></h1>
+            </div>
+            
+            <!-- Right section with notifications and search -->
+            <div class="flex items-center gap-4">
+                <!-- Development role toggle -->
+                <div class="hidden md:flex items-center gap-2 text-xs bg-yellow-100 px-2 py-1 rounded">
+                    <span class="text-gray-600">Dev:</span>
+                    <a href="?admin=0" class="<?= !$is_admin ? 'font-bold text-blue-600' : 'text-gray-500 hover:text-blue-600' ?>">User</a>
+                    <span class="text-gray-400">|</span>
+                    <a href="?admin=1" class="<?= $is_admin ? 'font-bold text-blue-600' : 'text-gray-500 hover:text-blue-600' ?>">Admin</a>
+                </div>
+                
+                <!-- Search button -->
+                <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200" aria-label="Search" title="Search">
+                    <i class="fas fa-search text-gray-700"></i>
+                </button>
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200" aria-label="Toggle theme" title="Toggle theme">
+                    <i class="fas fa-moon text-gray-700 dark:hidden"></i>
+                    <i class="fas fa-sun text-yellow-500 hidden dark:block"></i>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="relative">
+                    <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 relative" aria-label="Notifications" title="Notifications">
+                        <i class="fas fa-bell text-gray-700"></i>
+                        <?php if ($user['notifications'] > 0): ?>
+                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"><?= $user['notifications'] ?></span>
+                        <?php endif; ?>
+                    </button>
+                </div>
+                
+                <!-- User Dropdown -->
+                <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                    <button @click="open = !open" class="flex items-center gap-2 p-1 pr-2 rounded-full hover:bg-gray-100 transition-colors duration-200" aria-label="User menu">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-sm font-bold">
+                            <?= substr($user['name'], 0, 1) ?>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                         style="display: none;">
+                        <div class="py-1">
+                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-user mr-2 w-4 text-center"></i> View Profile
+                            </a>
+                            <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-moon mr-2 w-4 text-center"></i> Dark Mode
+                            </button>
+                            <a href="help.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-question-circle mr-2 w-4 text-center"></i> Help & Support
+                            </a>
+                            <a href="#" id="feedback-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-comment-dots mr-2 w-4 text-center"></i> Give Feedback
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2 w-4 text-center"></i> Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Dashboard Layout Container -->
+    <div class="flex min-h-screen">
+        <?php 
+        // Include appropriate sidebar based on user role
+        if ($is_admin) {
+            include_once 'sidebar-admin.php';
+        } else {
+            include_once 'sidebar-user.php';
+        }
+        ?>
+        
+        <!-- Main Content Area -->
+        <main class="flex-1 p-4 lg:p-8">

@@ -1,6 +1,6 @@
 # PostrMagic — AI Assistant Project Training Guide
 
-This document is a **single-source cheat-sheet** for PostrMagic’s AI assistant (Cascade) or any automated agent contributing to the codebase. It distills the *why*, *what* and *how* so that future automation remains aligned with product, tech and quality standards.
+This document is a **single-source cheat-sheet** for PostrMagic's AI assistant (Cascade) or any automated agent contributing to the codebase. It distills the *why*, *what* and *how* so that future automation remains aligned with product, tech and quality standards.
 
 ---
 ## 1. Project Essence
@@ -11,8 +11,8 @@ This document is a **single-source cheat-sheet** for PostrMagic’s AI assistant
 ## 2. Definitive Tech Stack
 | Concern | Mandatory Choice | Notes |
 |---------|------------------|-------|
-| Front-end | HTML5 / CSS3 / Vanilla JS | No frameworks; mobile-first styling. |
-| Back-end | PHP 8.1+ | Use built-in server for local dev. |
+| Front-end | HTML5 / CSS3 / Vanilla JS / TailwindCSS | No frameworks; mobile-first styling with TailwindCSS utility classes. |
+| Back-end | PHP 8.1+ | Use built-in server for local dev: `php -S localhost:8000` |
 | Database | MySQL (via cPanel phpMyAdmin) | **Do NOT** initialise until UI milestone passes. |
 | AI | OpenAI GPT-4V for image analysis, GPT-4 for text generation | Use `callOpenAI()` wrapper in `/api/*.php`. |
 | SMS | Telnyx.com REST API | Server-side via PHP SDK. |
@@ -26,15 +26,26 @@ This document is a **single-source cheat-sheet** for PostrMagic’s AI assistant
 ```
 /public_html
 ├── index.php              # Landing page (hero, CTA)
+├── index_v2.php           # Alternative landing page with new design
 ├── upload.php             # Poster upload form & preview
 ├── claim.php              # Event claiming screen
-├── dashboard.php          # User dashboard (post-launch)
+├── dashboard.php          # User dashboard layout with sidebar
+├── event-detail.php       # Event details and management
+├── media-library.php      # Media asset management
+├── analytics-dashboard.php # Analytics and metrics view
+├── user-profile.php       # User profile and settings
+├── settings.php           # System and account settings
+├── user-management.php    # Admin user management interface
 ├── includes/              # Reusable PHP fragments
-│   ├── header.php
-│   └── footer.php
+│   ├── header.php         # Public site header
+│   ├── footer.php         # Public site footer
+│   ├── dashboard-header.php # Logged-in user header
+│   ├── sidebar-user.php   # Navigation for regular users
+│   └── sidebar-admin.php  # Navigation for admin users
 ├── assets/
-│   ├── css/style.css
-│   ├── js/main.js
+│   ├── css/style.css      # Core styles
+│   ├── js/main.js         # Core JavaScript
+│   ├── js/dashboard.js    # Dashboard-specific JavaScript
 │   └── uploads/           # Poster images & media library
 ├── api/                   # Stateless AJAX endpoints
 ├── cron/                  # Scheduled scripts
@@ -48,16 +59,24 @@ This document is a **single-source cheat-sheet** for PostrMagic’s AI assistant
 2. Strongly-typed PHP (`declare(strict_types=1)`).
 3. No circular imports; small single-responsibility files.
 4. Mobile-first CSS, centralised theme variables (`:root`).
-5. Prepared statements for all SQL; never trust user input.
-6. Document every public function with **why**-focused comments.
+5. Use CSS `clamp()` for responsive typography instead of breakpoints.
+6. Prepared statements for all SQL; never trust user input.
+7. Document every public function with **why**-focused comments.
+8. Use CSRF tokens for all forms and API endpoints.
 
 (Full standards live in `MEMORY[user_global]` and must be mirrored.)
 
 ---
 ## 5. Build Sequence
-1. **UI Foundation**   *(current)*
+1. **UI Foundation**   *(current)*
    * Header/footer, hero, nav toggle.
+   * Dashboard layout with user/admin sidebars.
    * Poster upload page with drag-&-drop preview.
+   * Event detail page with tabs for content, analytics, and settings.
+   * Media library interface.
+   * Analytics dashboard with visualizations.
+   * User profile and settings pages.
+   * Admin user management interface.
 2. **AI Integration**  
    * `api/analyze-poster.php` — send base64 image → GPT-4V, parse JSON.
    * `api/generate-content.php` — feed extracted JSON → GPT-4.
@@ -92,6 +111,22 @@ Place shared helpers in `includes/functions.php` with namespaced functions or a 
 * Pre-commit: PHPCS, Prettier, ESLint (JS only).
 
 ---
+## 8.5. Local Development Server Setup
+For previewing PHP pages locally:
+```bash
+# Start PHP built-in server (requires PHP installed)
+php -S localhost:8000
+
+# Alternative: Python HTTP server for static files only
+python3 -m http.server 8000
+
+# Access pages at:
+# http://localhost:8000/index.php
+# http://localhost:8000/index_v2.php
+# http://localhost:8000/index_v2%20copy.php (for files with spaces)
+```
+
+---
 ## 9. Deployment Checklist (cPanel)
 1. Upload files under `/public_html` except `config.php`.
 2. Set correct file & folder permissions (644/755).
@@ -106,4 +141,26 @@ Place shared helpers in `includes/functions.php` with namespaced functions or a 
 * **Stakeholder** — venue, sponsor, media partner related to events.
 
 ---
-*Last updated: 2025-06-12*
+---
+## 11. UI Layout Structure
+
+### Dashboard Layout
+* **Logged-in Header** - Contains user information, notifications, and global actions
+* **Sidebar Navigation** - Different versions for regular users and administrators
+* **Main Content Area** - Changes dynamically based on navigation selection
+
+### Responsive Design Approach
+* **Typography**: Use CSS `clamp()` for fluid typography scaling
+  ```css
+  /* Example: */
+  .heading { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+  ```
+* **Layout**: Combine fluid sizing with selective media queries for major layout shifts
+* **Components**: Design elements should adapt smoothly across viewport sizes
+
+### Navigation Structure
+* **User Sidebar**: Events, Media Library, Analytics, Account Settings
+* **Admin Sidebar**: Additional sections for User Management, System Configuration
+
+---
+*Last updated: 2025-06-13*
