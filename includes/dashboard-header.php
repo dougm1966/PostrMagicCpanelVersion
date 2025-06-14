@@ -8,19 +8,20 @@ if (session_status() === PHP_SESSION_NONE) {
 $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
 define('BASE_URL', $base_url);
 
-// Include config
+// Include config and auth helper
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/auth-helper.php';
 
 // Set page title
 $page_title = isset($page_title) ? $page_title . ' - PostrMagic' : 'PostrMagic Dashboard';
 
-// Development toggle for admin/user views
-if (isset($_GET['admin'])) {
-    $_SESSION['is_admin'] = (bool)$_GET['admin'];
+// Backward compatibility for existing pages
+if (isset($_SESSION['is_admin']) && !isset($_SESSION['user_role'])) {
+    $_SESSION['user_role'] = $_SESSION['is_admin'] ? 'admin' : 'user';
 }
 
-// Determine if user is admin (this would normally come from auth system)
-$is_admin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : false;
+// Determine if user is admin using our auth helper
+$is_admin = isAdmin();
 
 // Mock user data (would normally come from database)
 $user = [
@@ -274,8 +275,8 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
 </head>
 <body class="font-sans bg-gray-100 overflow-x-hidden">
     <!-- Dashboard Header -->
-    <header class="w-full py-3 bg-white shadow-sm z-40 sticky top-0">
-        <div class="container mx-auto px-4 flex items-center justify-between">
+    <header class="w-full bg-white shadow-sm z-40 sticky top-0">
+        <div class="w-full px-4 py-3 flex items-center justify-between">
             <!-- Left section with logo and toggle -->
             <div class="flex items-center gap-4">
                 <button id="sidebar-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 lg:hidden" aria-label="Toggle sidebar">
@@ -288,10 +289,10 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
             <div class="flex items-center gap-4">
                 <!-- Development role toggle -->
                 <div class="hidden md:flex items-center gap-2 text-xs bg-yellow-100 px-2 py-1 rounded">
-                    <span class="text-gray-600">Dev:</span>
-                    <a href="?admin=0" class="<?= !$is_admin ? 'font-bold text-blue-600' : 'text-gray-500 hover:text-blue-600' ?>">User</a>
-                    <span class="text-gray-400">|</span>
-                    <a href="?admin=1" class="<?= $is_admin ? 'font-bold text-blue-600' : 'text-gray-500 hover:text-blue-600' ?>">Admin</a>
+                    <span class="font-semibold">Dev:</span>
+                    <a href="<?= base_url('dev-role-manager.php?role=admin') ?>" class="<?= $is_admin ? 'font-semibold underline' : '' ?>">Admin</a>
+                    <span>/</span>
+                    <a href="<?= base_url('dev-role-manager.php?role=user') ?>" class="<?= !$is_admin ? 'font-semibold underline' : '' ?>">User</a>
                 </div>
                 
                 <!-- Search button -->
@@ -392,7 +393,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
     </header>
     
     <!-- Dashboard Layout Container -->
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen w-full">
         <?php 
         // Include appropriate sidebar based on user role
         if ($is_admin) {

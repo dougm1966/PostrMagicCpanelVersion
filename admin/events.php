@@ -1,8 +1,9 @@
 <?php
-$page_title = 'Event Management';
+// Include auth helper and require admin access
+require_once __DIR__ . '/../includes/auth-helper.php';
+requireAdmin();
 
-// Force admin view
-$_SESSION['is_admin'] = true;
+$page_title = 'Event Management';
 
 // Mock data for admin event management
 $events = [
