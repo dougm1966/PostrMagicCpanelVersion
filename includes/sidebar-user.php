@@ -76,28 +76,6 @@
 
         <!-- Divider -->
         <hr class="my-4 border-gray-200">
-
-        <!-- Account -->
-        <div class="nav-group">
-            <button class="group flex items-center w-full px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 hover:bg-primary/10 hover:text-primary justify-between">
-                <div class="flex items-center">
-                    <i data-lucide="user" class="mr-3 h-5 w-5 text-gray-500 group-hover:text-primary"></i>
-                    Account
-                </div>
-                <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500"></i>
-            </button>
-            <div class="pl-10 space-y-1 mt-1">
-                <a href="user-profile.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-primary/10 hover:text-primary">
-                    Profile
-                </a>
-                <a href="settings.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-primary/10 hover:text-primary">
-                    Settings
-                </a>
-                <a href="billing.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-primary/10 hover:text-primary">
-                    Billing
-                </a>
-            </div>
-        </div>
     </nav>
 
     <!-- Sidebar Footer with User Profile Popup -->

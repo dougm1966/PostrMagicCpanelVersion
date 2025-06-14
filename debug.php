@@ -66,6 +66,7 @@ try {
     echo "<h3>Header Output Preview:</h3>";
     echo htmlspecialchars(substr($header_output, 0, 500)) . "...";
     echo "</div>";
+    echo "<a href='admin-dashboard.php' class='group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-900 dark:hover:text-white'>Admin Dashboard</a>";
 } catch (Exception $e) {
     echo "<p>❌ Error including dashboard-header.php: " . $e->getMessage() . "</p>";
 }

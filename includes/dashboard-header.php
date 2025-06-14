@@ -281,7 +281,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                 <button id="sidebar-toggle" class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 lg:hidden" aria-label="Toggle sidebar">
                     <i class="fas fa-bars text-gray-700"></i>
                 </button>
-                <h1 class="text-primary font-bold text-xl"><a href="<?= BASE_URL ?>dashboard.php">PostrMagic</a></h1>
+                <h1 class="text-primary font-bold text-xl"><a href="<?= BASE_URL ?>">PostrMagic</a></h1>
             </div>
             
             <!-- Right section with notifications and search -->
