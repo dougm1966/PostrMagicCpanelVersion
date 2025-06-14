@@ -1,17 +1,14 @@
 <?php
-// Site Configuration
-define('SITE_URL', 'https://yourdomain.com'); // No trailing slash
-define('SITE_NAME', 'PostrMagic');
+// Include main configuration file
+require_once __DIR__ . '/../config/config.php';
 
-// File Uploads
-define('UPLOAD_DIR', __DIR__ . '/../uploads/');
-define('MAX_UPLOAD_SIZE', 10 * 1024 * 1024); // 10MB
-
-// Error Reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Start Session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+// Site Configuration (if not already defined in main config)
+if (!defined('SITE_URL')) {
+    define('SITE_URL', 'https://yourdomain.com'); // No trailing slash
 }
+if (!defined('SITE_NAME')) {
+    define('SITE_NAME', 'PostrMagic');
+}
+
+// Use the centralized database connection from main config
+$pdo = getDBConnection();

@@ -83,7 +83,7 @@
             <button class="group flex items-center w-full px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400 justify-between">
                 <div class="flex items-center">
                     <i data-lucide="file-text" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
-                    Content Management
+                    Content
                 </div>
                 <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500 dark:text-gray-400"></i>
             </button>
@@ -177,7 +177,7 @@
                     <i data-lucide="file-text" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> System Logs
                 </a>
                 <div class="border-t border-gray-200 my-2"></div>
-                <a href="?logout=1" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
+                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>

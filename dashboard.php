@@ -1,10 +1,12 @@
 <?php
+// Include auth helper
+require_once 'includes/auth-helper.php';
+
+// Require login
+requireLogin();
+
 // Set page title
 $page_title = "Dashboard";
-
-// Mock session data for testing (would come from actual auth system)
-// Set to true to see admin sidebar, false for regular user sidebar
-$_SESSION['is_admin'] = false;
 
 // Include dashboard header (includes sidebars)
 require_once 'includes/dashboard-header.php';

@@ -163,12 +163,12 @@ $pendingEventsPercent = round(($stats['pending_events'] / $stats['total_events']
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0">
                             <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                                <i data-lucide="<?= $activity['icon'] ?>" class="h-4 w-4 text-purple-600 dark:text-purple-400"></i>
+                                <i data-lucide="activity" class="h-4 w-4 text-purple-600 dark:text-purple-400"></i>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm text-gray-900 dark:text-white"><?= htmlspecialchars($activity['description']) ?></p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $activity['time'] ?></p>
+                            <p class="text-sm text-gray-900 dark:text-white"><?= htmlspecialchars($activity['user'] ?? 'System') ?>: <?= htmlspecialchars($activity['action'] ?? '') ?><?= !empty($activity['details']) ? ' - ' . htmlspecialchars($activity['details']) : '' ?></p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400"><?= !empty($activity['timestamp']) ? date('M j, Y g:i A', strtotime($activity['timestamp'])) : '' ?></p>
                         </div>
                     </div>
                     <?php endforeach; ?>

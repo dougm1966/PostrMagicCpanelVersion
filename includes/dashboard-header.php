@@ -4,9 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Define base URL
-$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-define('BASE_URL', $base_url);
+// Define base URL if not already defined
+if (!defined('BASE_URL')) {
+    $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+    define('BASE_URL', $base_url);
+}
 
 // Include config and auth helper
 require_once __DIR__ . '/config.php';
@@ -15,20 +17,16 @@ require_once __DIR__ . '/auth-helper.php';
 // Set page title
 $page_title = isset($page_title) ? $page_title . ' - PostrMagic' : 'PostrMagic Dashboard';
 
-// Backward compatibility for existing pages
-if (isset($_SESSION['is_admin']) && !isset($_SESSION['user_role'])) {
-    $_SESSION['user_role'] = $_SESSION['is_admin'] ? 'admin' : 'user';
-}
-
 // Determine if user is admin using our auth helper
 $is_admin = isAdmin();
 
-// Mock user data (would normally come from database)
+// Get current user data
+$current_user = getCurrentUser();
 $user = [
-    'name' => 'Alex Johnson',
-    'email' => 'alex@example.com',
-    'avatar' => 'https://randomuser.me/api/portraits/men/32.jpg',
-    'notifications' => 3
+    'name' => $current_user['username'] ?? 'User',
+    'email' => $current_user['email'] ?? '',
+    'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($current_user['username'] ?? 'U') . '&background=6366f1&color=fff',
+    'notifications' => 0
 ];
 ?>
 <?php
@@ -287,13 +285,6 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
             
             <!-- Right section with notifications and search -->
             <div class="flex items-center gap-4">
-                <!-- Development role toggle -->
-                <div class="hidden md:flex items-center gap-2 text-xs bg-yellow-100 px-2 py-1 rounded">
-                    <span class="font-semibold">Dev:</span>
-                    <a href="<?= base_url('dev-role-manager.php?role=admin') ?>" class="<?= $is_admin ? 'font-semibold underline' : '' ?>">Admin</a>
-                    <span>/</span>
-                    <a href="<?= base_url('dev-role-manager.php?role=user') ?>" class="<?= !$is_admin ? 'font-semibold underline' : '' ?>">User</a>
-                </div>
                 
                 <!-- Search button -->
                 <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200" aria-label="Search" title="Search">

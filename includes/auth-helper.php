@@ -1,4 +1,7 @@
 <?php
+// Include the main auth functions
+require_once __DIR__ . '/auth.php';
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,6 +12,10 @@ if (session_status() === PHP_SESSION_NONE) {
  * @return bool
  */
 function isAdmin() {
+    // First check if user is logged in
+    if (!isLoggedIn()) {
+        return false;
+    }
     return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 }
 
@@ -16,8 +23,11 @@ function isAdmin() {
  * Require admin access - redirects to login or 403 if not admin
  */
 function requireAdmin() {
+    // First require login
+    requireLogin();
+    
+    // Then check admin role
     if (!isAdmin()) {
-        // You can customize this to redirect to login or show 403
         header('HTTP/1.0 403 Forbidden');
         echo 'Access Denied - Admin privileges required';
         exit();
