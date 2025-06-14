@@ -4,38 +4,58 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Theme Management */
     const themeToggle = document.querySelector('.theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
-    const body = document.body;
+    const html = document.documentElement;
     
-    // Initialize theme from localStorage or default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
+    // Initialize theme from localStorage or system preference
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // If no saved theme, use system preference
+        if (!savedTheme) {
+            setTheme(prefersDark ? 'dark' : 'light');
+        } else {
+            setTheme(savedTheme);
+        }
+    }
     
     function setTheme(theme) {
         if (theme === 'dark') {
-            body.setAttribute('data-theme', 'dark');
+            html.classList.add('dark');
             if (themeIcon) themeIcon.className = 'fa fa-sun';
         } else {
-            body.removeAttribute('data-theme');
+            html.classList.remove('dark');
             if (themeIcon) themeIcon.className = 'fa fa-moon';
         }
         localStorage.setItem('theme', theme);
+        document.cookie = `dark_mode=${theme === 'dark'}; path=/; max-age=31536000; samesite=lax`;
     }
     
     function toggleTheme() {
-        const currentTheme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
     }
+    
+    // Initialize theme
+    initTheme();
     
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
     }
     
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {  // Only auto-update if no manual preference set
+            setTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+    
     // Expose theme functions globally for future code snippets
     window.PostrMagicTheme = {
         setTheme,
         toggleTheme,
-        getCurrentTheme: () => body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+        getCurrentTheme: () => html.classList.contains('dark') ? 'dark' : 'light'
     };
 
     /* Mobile Nav Toggle */

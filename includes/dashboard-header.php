@@ -30,9 +30,24 @@ $user = [
     'notifications' => 3
 ];
 ?>
+<?php
+// Check for dark mode preference from cookie or user settings
+$dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : true; // Default to dark mode if no preference set
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?= $dark_mode ? 'dark' : '' ?>">
 <head>
+    <script>
+        // Prevent flash of light mode by immediately setting the theme before any content loads
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -317,10 +332,43 @@ $user = [
                          x-transition:leave="transition ease-in duration-75"
                          x-transition:leave-start="transform opacity-100 scale-100"
                          x-transition:leave-end="transform opacity-0 scale-95"
-                         class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                         class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                          style="display: none;">
+                        <!-- Token Count -->
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Available Tokens</span>
+                                <div class="flex items-center">
+                                    <span class="text-lg font-bold text-primary dark:text-primary-300">1,250</span>
+                                    <button class="ml-2 p-1 text-xs text-white bg-primary hover:bg-primary/90 rounded-full w-5 h-5 flex items-center justify-center">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-primary h-1.5 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                <span>25% used</span>
+                                <a href="#" class="text-primary hover:underline">Get more</a>
+                            </div>
+                        </div>
+                        
                         <div class="py-1">
-                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <!-- User Profile -->
+                            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-sm font-bold">
+                                        <?= substr($user['name'], 0, 1) ?>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($user['name']) ?></p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?= htmlspecialchars($user['email']) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <i class="fas fa-user mr-2 w-4 text-center"></i> View Profile
                             </a>
                             <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

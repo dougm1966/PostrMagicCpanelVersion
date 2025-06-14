@@ -101,7 +101,7 @@
     </nav>
 
     <!-- Sidebar Footer with User Profile Popup -->
-    <div class="px-4 py-4 border-t border-gray-200 relative sticky bottom-0 bg-white z-10">
+    <div class="px-4 py-4 border-t border-gray-200 relative sticky bottom-0 bg-white dark:bg-gray-900 z-10">
         <!-- User Profile Button -->
         <button id="profile-menu-button" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
             <div class="flex items-center">
@@ -116,7 +116,23 @@
         </button>
         
         <!-- User Profile Popup (Hidden by default) -->
-        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white rounded-lg shadow-lg border border-gray-100 mb-2 z-50">
+        <div id="profile-menu" class="hidden absolute bottom-full left-0 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700 mb-2 z-50">
+            <!-- Token Count Section -->
+            <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Available Tokens</span>
+                    <button class="p-1 text-xs text-white bg-primary hover:bg-primary/90 rounded-full w-5 h-5 flex items-center justify-center">
+                        <i class="fas fa-plus text-xs"></i>
+                    </button>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-1">
+                    <div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                    <span>1,250 tokens</span>
+                    <a href="#" class="text-primary hover:underline">Get more</a>
+                </div>
+            </div>
             <div class="p-2">
                 <a href="user-profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary rounded-md">
                     <i data-lucide="user" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> My Profile

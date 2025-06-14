@@ -14,31 +14,88 @@ include __DIR__ . '/includes/dashboard-header.php';
                     <h2 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="eventTitle" class="block text-sm font-medium text-gray-700 mb-1">Event Title *</label>
-                            <input type="text" id="eventTitle" name="eventTitle" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                            <label for="eventTitle" class="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
+                            <input type="text" id="eventTitle" name="eventTitle"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                   bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
                         </div>
                         <div>
-                            <label for="eventDate" class="block text-sm font-medium text-gray-700 mb-1">Event Date *</label>
-                            <input type="datetime-local" id="eventDate" name="eventDate" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                            <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <input type="text" id="location" name="location"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                   bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
                         </div>
-                        <div>
-                            <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location *</label>
-                            <input type="text" id="location" name="location" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                        <div class="md:col-span-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Submitted On</label>
+                                    <?php
+                                    // TODO: Replace with user's timezone from profile settings
+                                    $timezone = 'America/Denver'; // Default to Denver timezone until user profile is implemented
+                                    $date = new DateTime('now', new DateTimeZone($timezone));
+                                    ?>
+                                    <div class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300" 
+                                         data-timezone="<?= htmlspecialchars($timezone) ?>"
+                                         data-timestamp="<?= time() ?>">
+                                        <?= $date->format('F j, Y, g:i a') ?>
+                                        <span class="text-xs text-gray-500">(<?= $timezone ?>)</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="eventDate" class="block text-sm font-medium text-gray-700 mb-1">Event Date</label>
+                                    <input type="datetime-local" id="eventDate" name="eventDate"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                           bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label for="eventType" class="block text-sm font-medium text-gray-700 mb-1">Event Type *</label>
-                            <select id="eventType" name="eventType" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-                                <option value="">Select event type</option>
-                                <option value="sports">Sports</option>
-                                <option value="music">Music</option>
-                                <option value="business">Business</option>
-                                <option value="community">Community</option>
-                                <option value="other">Other</option>
-                            </select>
+                        <div class="md:col-span-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="contactName" class="block text-sm font-medium text-gray-700 mb-1">Contact Name</label>
+                                    <input type="text" id="contactName" name="contactName"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                           bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                           placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label for="eventType" class="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
+                                    <select id="eventType" name="eventType"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                            bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
+                                        <option value="" class="dark:bg-gray-700 dark:text-gray-100">Select event type</option>
+                                        <option value="sports" class="dark:bg-gray-700 dark:text-gray-100">Sports</option>
+                                        <option value="music" class="dark:bg-gray-700 dark:text-gray-100">Music</option>
+                                        <option value="business" class="dark:bg-gray-700 dark:text-gray-100">Business</option>
+                                        <option value="community" class="dark:bg-gray-700 dark:text-gray-100">Community</option>
+                                        <option value="other" class="dark:bg-gray-700 dark:text-gray-100">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="contactEmail" class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
+                                    <input type="email" id="contactEmail" name="contactEmail"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                           bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                           placeholder="contact@example.com"
+                                           pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                                           oninvalid="this.setCustomValidity('Please enter a valid email address')"
+                                           oninput="this.setCustomValidity('')">
+                                </div>
+                                <div>
+                                    <label for="contactPhone" class="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
+                                    <input type="tel" id="contactPhone" name="contactPhone"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                           bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                           placeholder="(555) 123-4567"
+                                           pattern="\(\d{3}\) \d{3}-\d{4}"
+                                           oninvalid="this.setCustomValidity('Please use format: (123) 456-7890')"
+                                           oninput="this.setCustomValidity('')">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,9 +104,10 @@ include __DIR__ . '/includes/dashboard-header.php';
                 <div>
                     <h2 class="text-lg font-medium text-gray-900 mb-4">Event Description</h2>
                     <div>
-                        <label for="eventDescription" class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-                        <textarea id="eventDescription" name="eventDescription" rows="4" required
-                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></textarea>
+                        <label for="eventDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="eventDescription" name="eventDescription" rows="4"
+                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary
+                                 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"></textarea>
                     </div>
                 </div>
 
@@ -59,7 +117,7 @@ include __DIR__ . '/includes/dashboard-header.php';
                     <div class="space-y-4">
                         <!-- Featured Image Upload -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image *</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Event Poster *</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                 <div class="space-y-1 text-center">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -102,21 +160,101 @@ include __DIR__ . '/includes/dashboard-header.php';
                 <!-- Social Media Section -->
                 <div>
                     <h2 class="text-lg font-medium text-gray-900 mb-4">Social Media</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label for="facebookEvent" class="block text-sm font-medium text-gray-700 mb-1">Facebook Event URL</label>
-                            <input type="url" id="facebookEvent" name="facebookEvent"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-                                   placeholder="https://facebook.com/events/...">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Facebook -->
+                        <div class="space-y-1">
+                            <label for="facebookEvent" class="block text-sm font-medium text-gray-700">Facebook Event URL</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-facebook text-blue-600"></i>
+                                </span>
+                                <input type="url" id="facebookEvent" name="facebookEvent"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="https://facebook.com/events/...">
+                            </div>
                         </div>
-                        <div>
-                            <label for="twitterHashtag" class="block text-sm font-medium text-gray-700 mb-1">Twitter Hashtag</label>
-                            <div class="mt-1 flex rounded-md shadow-sm">
-                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                        
+                        <!-- Facebook Business -->
+                        <div class="space-y-1">
+                            <label for="facebookBusiness" class="block text-sm font-medium text-gray-700">Facebook Business Page</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-facebook-f text-blue-600"></i>
+                                </span>
+                                <input type="url" id="facebookBusiness" name="facebookBusiness"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="https://facebook.com/yourbusiness">
+                            </div>
+                        </div>
+                        
+                        <!-- Instagram -->
+                        <div class="space-y-1">
+                            <label for="instagram" class="block text-sm font-medium text-gray-700">Instagram</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-instagram text-pink-600"></i>
+                                </span>
+                                <input type="text" id="instagram" name="instagram"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="@yourusername">
+                            </div>
+                        </div>
+                        
+                        <!-- TikTok -->
+                        <div class="space-y-1">
+                            <label for="tiktok" class="block text-sm font-medium text-gray-700">TikTok</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-tiktok"></i>
+                                </span>
+                                <input type="text" id="tiktok" name="tiktok"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="@yourusername">
+                            </div>
+                        </div>
+                        
+                        <!-- Twitter -->
+                        <div class="space-y-1">
+                            <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-twitter text-blue-400"></i>
+                                </span>
+                                <input type="text" id="twitter" name="twitter"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="@username">
+                            </div>
+                        </div>
+                        
+                        <!-- LinkedIn -->
+                        <div class="space-y-1">
+                            <label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
+                                    <i class="fab fa-linkedin text-blue-700"></i>
+                                </span>
+                                <input type="url" id="linkedin" name="linkedin"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                       placeholder="https://linkedin.com/company/yourcompany">
+                            </div>
+                        </div>
+                        
+                        <!-- Twitter Hashtag -->
+                        <div class="space-y-1">
+                            <label for="twitterHashtag" class="block text-sm font-medium text-gray-700">Event Hashtag</label>
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-3 h-10 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
                                     #
                                 </span>
                                 <input type="text" id="twitterHashtag" name="twitterHashtag"
-                                       class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary"
+                                       class="flex-1 min-w-0 block w-full h-10 px-3 rounded-none rounded-r-md border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary
+                                       bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                                        placeholder="YourEventName">
                             </div>
                         </div>

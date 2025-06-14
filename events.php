@@ -132,11 +132,12 @@ require_once 'includes/dashboard-header.php';
     </div>
     <div class="flex items-center gap-2">
         <label for="sort" class="text-sm font-medium text-gray-700">Sort by:</label>
-        <select id="sort" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
-            <option>Date Created</option>
-            <option>Event Date</option>
-            <option>Title (A-Z)</option>
-            <option>Status</option>
+        <select id="sort" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary
+                bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600">
+            <option class="dark:bg-gray-700 dark:text-gray-100">Date Created</option>
+            <option class="dark:bg-gray-700 dark:text-gray-100">Event Date</option>
+            <option class="dark:bg-gray-700 dark:text-gray-100">Title (A-Z)</option>
+            <option class="dark:bg-gray-700 dark:text-gray-100">Status</option>
         </select>
     </div>
 </div>
@@ -167,14 +168,16 @@ require_once 'includes/dashboard-header.php';
 </div>
 <?php else: ?>
 <!-- Events Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     <?php foreach ($filtered_events as $event): ?>
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
         <!-- Event Thumbnail -->
-        <div class="aspect-video bg-gray-100 relative">
-            <img src="<?= htmlspecialchars($event['thumbnail']) ?>" 
-                 alt="<?= htmlspecialchars($event['title']) ?>"
-                 class="w-full h-full object-cover">
+        <div class="relative" style="padding-bottom: 129.41%;"> <!-- 8.5:11 aspect ratio -->
+            <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <img src="<?= htmlspecialchars($event['thumbnail']) ?>" 
+                     alt="<?= htmlspecialchars($event['title']) ?>"
+                     class="h-full w-auto max-w-full object-contain">
+            </div>
             <div class="absolute top-2 right-2">
                 <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium <?= getStatusBadgeClass($event['status']) ?>">
                     <?= ucfirst($event['status']) ?>
