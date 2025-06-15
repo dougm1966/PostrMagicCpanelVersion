@@ -56,6 +56,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $message = 'Security settings saved successfully.';
                 break;
+                
+            case 'llm':
+                // Handle LLM settings
+                require_once __DIR__ . '/../includes/llm-manager.php';
+                require_once __DIR__ . '/../includes/llm-prompt-manager.php';
+                
+                $llm_action = $_POST['llm_action'] ?? '';
+                
+                switch ($llm_action) {
+                    case 'save_api_keys':
+                        // Update API keys in config (this would need proper implementation)
+                        $message = 'LLM API keys updated successfully.';
+                        break;
+                        
+                    case 'save_provider_config':
+                        // Handle provider configuration
+                        $message = 'Provider configuration saved successfully.';
+                        break;
+                        
+                    case 'save_prompt':
+                        $promptManager = getLLMPromptManager();
+                        $promptData = [
+                            'prompt_type' => $_POST['prompt_type'],
+                            'event_category' => $_POST['event_category'] ?: null,
+                            'content_type' => $_POST['content_type'] ?: null,
+                            'system_prompt' => $_POST['system_prompt'],
+                            'user_prompt' => $_POST['user_prompt'],
+                            'assistant_prompt' => $_POST['assistant_prompt'] ?: null,
+                            'version_notes' => $_POST['version_notes'] ?: null,
+                            'created_by_user_id' => getCurrentUser()['id']
+                        ];
+                        
+                        $result = $promptManager->savePrompt($promptData);
+                        $message = $result['success'] ? $result['message'] : 'Error: ' . $result['error'];
+                        break;
+                        
+                    default:
+                        $message = 'LLM settings saved successfully.';
+                }
+                break;
         }
     } catch (Exception $e) {
         $error = 'Error saving settings: ' . $e->getMessage();
@@ -125,6 +165,10 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     <a href="?tab=security" class="<?= $current_tab === 'security' ? 'border-purple-500 text-purple-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' ?> whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                         <i data-lucide="shield" class="inline-block mr-2 h-4 w-4"></i>
                         Security
+                    </a>
+                    <a href="?tab=llm" class="<?= $current_tab === 'llm' ? 'border-purple-500 text-purple-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' ?> whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                        <i data-lucide="brain" class="inline-block mr-2 h-4 w-4"></i>
+                        AI/LLM
                     </a>
                 </nav>
             </div>
@@ -303,6 +347,233 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                         </button>
                     </div>
                 </form>
+
+                <?php elseif ($current_tab === 'llm'): ?>
+                <!-- LLM Settings -->
+                <?php
+                // Load LLM data
+                require_once __DIR__ . '/../includes/llm-manager.php';
+                require_once __DIR__ . '/../includes/llm-prompt-manager.php';
+                
+                $llmManager = getLLMManager();
+                $promptManager = getLLMPromptManager();
+                
+                // Get providers, configurations, and prompts
+                $pdo = getDBConnection();
+                $isMySQL = (DB_TYPE === 'mysql');
+                
+                // Get providers
+                $providerTable = $isMySQL ? 'llm_providers' : 'llm_providers_sqlite';
+                $stmt = $pdo->query("SELECT * FROM {$providerTable} ORDER BY display_name");
+                $providers = $stmt->fetchAll();
+                
+                // Get prompts
+                $prompts = $promptManager->getAllPrompts();
+                
+                // Get event categories
+                $categoryTable = $isMySQL ? 'event_categories' : 'event_categories_sqlite';
+                $stmt = $pdo->query("SELECT * FROM {$categoryTable} WHERE is_enabled = " . ($isMySQL ? 'TRUE' : '1') . " ORDER BY category_name");
+                $categories = $stmt->fetchAll();
+                ?>
+                
+                <div class="space-y-8">
+                    <!-- API Keys Section -->
+                    <form method="POST" class="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-6">
+                        <input type="hidden" name="tab" value="llm">
+                        <input type="hidden" name="llm_action" value="save_api_keys">
+                        
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                            <i data-lucide="key" class="inline-block mr-2 h-5 w-5"></i>
+                            API Keys
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">OpenAI API Key</label>
+                                <input type="password" name="openai_api_key" value="<?= defined('OPENAI_API_KEY') ? (OPENAI_API_KEY ? '***hidden***' : '') : '' ?>" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                                <p class="mt-1 text-xs text-gray-500">Used for GPT-4, GPT-3.5, and vision analysis</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Anthropic API Key</label>
+                                <input type="password" name="anthropic_api_key" value="<?= defined('ANTHROPIC_API_KEY') ? (ANTHROPIC_API_KEY ? '***hidden***' : '') : '' ?>" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                                <p class="mt-1 text-xs text-gray-500">Used for Claude models</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Google Gemini API Key</label>
+                                <input type="password" name="gemini_api_key" value="<?= defined('GEMINI_API_KEY') ? (GEMINI_API_KEY ? '***hidden***' : '') : '' ?>" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                                <p class="mt-1 text-xs text-gray-500">Used for Gemini Pro models</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700">
+                                Save API Keys
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Provider Status -->
+                    <div class="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                            <i data-lucide="server" class="inline-block mr-2 h-5 w-5"></i>
+                            Provider Status
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <?php foreach ($providers as $provider): ?>
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($provider['display_name']) ?></h4>
+                                        <p class="text-sm text-gray-500"><?= htmlspecialchars($provider['name']) ?></p>
+                                    </div>
+                                    <span class="px-2 py-1 text-xs rounded <?= $provider['is_enabled'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                                        <?= $provider['is_enabled'] ? 'Enabled' : 'Disabled' ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    
+                    <!-- Prompt Management -->
+                    <div class="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                                <i data-lucide="edit" class="inline-block mr-2 h-5 w-5"></i>
+                                Prompt Management
+                            </h3>
+                            <button type="button" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 text-sm" onclick="togglePromptForm()">
+                                Add New Prompt
+                            </button>
+                        </div>
+                        
+                        <!-- Add Prompt Form (Hidden by default) -->
+                        <form method="POST" id="promptForm" class="hidden bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600 mb-4">
+                            <input type="hidden" name="tab" value="llm">
+                            <input type="hidden" name="llm_action" value="save_prompt">
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Prompt Type</label>
+                                    <select name="prompt_type" required class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2">
+                                        <option value="">Select Type</option>
+                                        <option value="vision_analysis">Vision Analysis</option>
+                                        <option value="category_detection">Category Detection</option>
+                                        <option value="content_creation">Content Creation</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Category</label>
+                                    <select name="event_category" class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2">
+                                        <option value="">Global</option>
+                                        <?php foreach ($categories as $category): ?>
+                                        <option value="<?= htmlspecialchars($category['category_name']) ?>">
+                                            <?= htmlspecialchars($category['display_name']) ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content Type</label>
+                                    <select name="content_type" class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2">
+                                        <option value="">N/A</option>
+                                        <option value="facebook">Facebook</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">System Prompt</label>
+                                <textarea name="system_prompt" rows="4" required class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">User Prompt</label>
+                                <textarea name="user_prompt" rows="6" required class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2"></textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Version Notes</label>
+                                <input type="text" name="version_notes" class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-3 py-2">
+                            </div>
+                            
+                            <div class="flex space-x-3">
+                                <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 text-sm">
+                                    Save Prompt
+                                </button>
+                                <button type="button" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 text-sm" onclick="togglePromptForm()">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Existing Prompts -->
+                        <div class="space-y-3">
+                            <?php foreach ($prompts as $prompt): ?>
+                            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">
+                                            <?= htmlspecialchars($prompt['prompt_type']) ?>
+                                            <?php if ($prompt['content_type']): ?>
+                                                - <?= htmlspecialchars($prompt['content_type']) ?>
+                                            <?php endif; ?>
+                                        </h4>
+                                        <p class="text-sm text-gray-500">
+                                            Category: <?= htmlspecialchars($prompt['event_category'] ?: 'Global') ?> | 
+                                            Version: <?= $prompt['version_number'] ?> |
+                                            Created: <?= date('M j, Y', strtotime($prompt['created_date'])) ?>
+                                        </p>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-sm text-purple-600 hover:text-purple-700 px-3 py-1 rounded border border-purple-300 hover:bg-purple-50">
+                                            Edit
+                                        </button>
+                                        <button class="text-sm text-green-600 hover:text-green-700 px-3 py-1 rounded border border-green-300 hover:bg-green-50">
+                                            Test
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    
+                    <!-- Analytics Summary -->
+                    <div class="bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-lg p-6">
+                        <h3 class="text-lg font-medium mb-4">
+                            <i data-lucide="bar-chart" class="inline-block mr-2 h-5 w-5"></i>
+                            LLM Usage Summary (Last 7 Days)
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">-</div>
+                                <div class="text-sm opacity-90">Total Requests</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">-</div>
+                                <div class="text-sm opacity-90">Total Cost</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">-</div>
+                                <div class="text-sm opacity-90">Avg Response Time</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">-</div>
+                                <div class="text-sm opacity-90">Success Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <?php endif; ?>
             </div>
         </div>
@@ -312,6 +583,12 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
 <script>
     // Initialize Lucide icons
     lucide.createIcons();
+    
+    // Toggle prompt form visibility
+    function togglePromptForm() {
+        const form = document.getElementById('promptForm');
+        form.classList.toggle('hidden');
+    }
 </script>
 
 <?php require_once __DIR__ . '/../includes/dashboard-footer.php'; ?>

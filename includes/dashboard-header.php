@@ -10,9 +10,13 @@ if (!defined('BASE_URL')) {
     define('BASE_URL', $base_url);
 }
 
-// Include config and auth helper
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/auth-helper.php';
+// Include config and auth helper only if not already loaded
+if (!defined('POSTRMAGIC_CONFIG_LOADED')) {
+    require_once __DIR__ . '/../config/config.php';
+}
+if (!function_exists('getCurrentUser')) {
+    require_once __DIR__ . '/auth-helper.php';
+}
 
 // Set page title
 $page_title = isset($page_title) ? $page_title . ' - PostrMagic' : 'PostrMagic Dashboard';

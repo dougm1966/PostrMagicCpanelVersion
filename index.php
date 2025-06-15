@@ -137,18 +137,11 @@
       </nav>
       
       <div class="flex items-center gap-2 lg:gap-4">
-        <!-- Development role toggle -->
-        <div class="flex items-center gap-2 text-xs bg-yellow-100 px-2 py-1 rounded">
-          <span class="text-gray-600">Dev:</span>
-          <a href="dashboard.php?admin=0" class="text-gray-500 hover:text-blue-600">User</a>
-          <span class="text-gray-400">|</span>
-          <a href="dashboard.php?admin=1" class="text-gray-500 hover:text-blue-600">Admin</a>
-        </div>
         
-        <button class="hidden sm:flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-gray-100/50 hover:scale-105">
+        <a href="login.php" class="hidden sm:flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-gray-100/50 hover:scale-105">
           <i data-lucide="log-in" class="w-4 h-4"></i>
           Sign in
-        </button>
+        </a>
         <button class="flex items-center gap-2 text-xs lg:text-sm font-semibold px-3 lg:px-5 py-2 lg:py-2.5 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-brand-500/50 hover:scale-105 hover:-translate-y-1">
           <i data-lucide="play-circle" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Try PostrMagic Free</span>
