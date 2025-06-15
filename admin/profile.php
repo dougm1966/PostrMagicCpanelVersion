@@ -1,6 +1,7 @@
 <?php
 // Include auth helper and require admin access
 require_once __DIR__ . '/../includes/auth-helper.php';
+require_once __DIR__ . '/../includes/avatar-upload.php';
 requireAdmin();
 
 // Set page title
@@ -17,7 +18,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = getDBConnection();
         $userId = $_SESSION['user_id'];
         
-        if ($action === 'update_profile') {
+        if ($action === 'update_extended_profile') {
+            // Handle extended profile fields
+            $profileData = [
+                'name' => $_POST['name'] ?? '',
+                'bio' => $_POST['bio'] ?? '',
+                'location' => $_POST['location'] ?? '',
+                'website' => $_POST['website'] ?? '',
+                'twitter_handle' => $_POST['twitter_handle'] ?? '',
+                'phone' => $_POST['phone'] ?? '',
+                'timezone' => $_POST['timezone'] ?? 'UTC',
+            ];
+            
+            // Validate profile data
+            $validationErrors = validateProfileData($profileData, $userId);
+            if (!empty($validationErrors)) {
+                throw new Exception('Validation errors: ' . implode(', ', $validationErrors));
+            }
+            
+            // Update profile
+            if (updateUserProfile($userId, $profileData)) {
+                $message = 'Profile updated successfully.';
+            } else {
+                throw new Exception('Failed to update profile.');
+            }
+            
+        } elseif ($action === 'upload_avatar') {
+            // Handle avatar upload
+            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $uploadResult = handleAvatarUpload($_FILES['avatar'], $userId);
+                if ($uploadResult['success']) {
+                    $message = $uploadResult['message'];
+                } else {
+                    throw new Exception($uploadResult['message']);
+                }
+            } else {
+                throw new Exception('No avatar file selected.');
+            }
+            
+        } elseif ($action === 'delete_avatar') {
+            // Handle avatar deletion
+            if (deleteUserAvatar($userId)) {
+                $message = 'Avatar deleted successfully.';
+            } else {
+                throw new Exception('Failed to delete avatar.');
+            }
+            
+        } elseif ($action === 'update_profile') {
             $username = $_POST['username'] ?? '';
             $email = $_POST['email'] ?? '';
             $current_password = $_POST['current_password'] ?? '';
@@ -232,6 +279,76 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                     </form>
                 </div>
 
+                <!-- Extended Profile Information -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">Profile Information</h3>
+                    </div>
+                    <form method="POST" class="p-6 space-y-6">
+                        <input type="hidden" name="action" value="update_extended_profile">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Display Name</label>
+                                <input type="text" id="name" name="name" value="<?= htmlspecialchars($currentUser['name'] ?? '') ?>" placeholder="Your full name" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                            </div>
+                            
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Location</label>
+                                <input type="text" id="location" name="location" value="<?= htmlspecialchars($currentUser['location'] ?? '') ?>" placeholder="City, Country" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                            <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Bio</label>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..." class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3"><?= htmlspecialchars($currentUser['bio'] ?? '') ?></textarea>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Maximum 1000 characters</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="website" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Website</label>
+                                <input type="url" id="website" name="website" value="<?= htmlspecialchars($currentUser['website'] ?? '') ?>" placeholder="https://example.com" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                            </div>
+                            
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="twitter_handle" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Twitter Handle</label>
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">@</span>
+                                    <input type="text" id="twitter_handle" name="twitter_handle" value="<?= htmlspecialchars($currentUser['twitter_handle'] ?? '') ?>" placeholder="username" class="flex-1 block w-full rounded-none rounded-r-md border-gray-300 dark:border-gray-600 focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" value="<?= htmlspecialchars($currentUser['phone'] ?? '') ?>" placeholder="+1 (555) 123-4567" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                            </div>
+                            
+                            <div class="p-6 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
+                                <label for="timezone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Timezone</label>
+                                <select id="timezone" name="timezone" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-purple-500 focus:ring-purple-500 dark:bg-gray-700 dark:text-white px-4 py-3">
+                                    <option value="UTC" <?= ($currentUser['timezone'] ?? 'UTC') === 'UTC' ? 'selected' : '' ?>>UTC</option>
+                                    <option value="America/New_York" <?= ($currentUser['timezone'] ?? '') === 'America/New_York' ? 'selected' : '' ?>>Eastern Time</option>
+                                    <option value="America/Chicago" <?= ($currentUser['timezone'] ?? '') === 'America/Chicago' ? 'selected' : '' ?>>Central Time</option>
+                                    <option value="America/Denver" <?= ($currentUser['timezone'] ?? '') === 'America/Denver' ? 'selected' : '' ?>>Mountain Time</option>
+                                    <option value="America/Los_Angeles" <?= ($currentUser['timezone'] ?? '') === 'America/Los_Angeles' ? 'selected' : '' ?>>Pacific Time</option>
+                                    <option value="Europe/London" <?= ($currentUser['timezone'] ?? '') === 'Europe/London' ? 'selected' : '' ?>>London</option>
+                                    <option value="Europe/Paris" <?= ($currentUser['timezone'] ?? '') === 'Europe/Paris' ? 'selected' : '' ?>>Paris</option>
+                                    <option value="Asia/Tokyo" <?= ($currentUser['timezone'] ?? '') === 'Asia/Tokyo' ? 'selected' : '' ?>>Tokyo</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end pt-4">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Preferences -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -289,15 +406,42 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                 <!-- Avatar & Basic Info -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <div class="text-center">
-                        <div class="mx-auto h-20 w-20 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
-                            <?= substr($currentUser['username'], 0, 1) ?>
-                        </div>
-                        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($currentUser['username']) ?></h3>
+                        <?php if ($currentUser['avatar']): ?>
+                            <img src="<?= htmlspecialchars($currentUser['avatar_url']) ?>" alt="Avatar" class="mx-auto h-20 w-20 rounded-full object-cover">
+                        <?php else: ?>
+                            <div class="mx-auto h-20 w-20 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
+                                <?= substr($currentUser['display_name'] ?: $currentUser['username'], 0, 1) ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white"><?= htmlspecialchars($currentUser['display_name'] ?: $currentUser['username']) ?></h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400"><?= htmlspecialchars($currentUser['email']) ?></p>
                         <div class="mt-2">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">
                                 Administrator
                             </span>
+                        </div>
+                        
+                        <!-- Avatar Upload -->
+                        <div class="mt-4 space-y-2">
+                            <form method="POST" enctype="multipart/form-data" class="space-y-2">
+                                <input type="hidden" name="action" value="upload_avatar">
+                                <div class="flex items-center justify-center">
+                                    <label for="avatar" class="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-xs font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <i data-lucide="camera" class="mr-1 h-3 w-3"></i>
+                                        Choose Avatar
+                                    </label>
+                                    <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden" onchange="this.form.submit()">
+                                </div>
+                            </form>
+                            <?php if ($currentUser['avatar']): ?>
+                                <form method="POST" class="inline">
+                                    <input type="hidden" name="action" value="delete_avatar">
+                                    <button type="submit" class="text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300" onclick="return confirm('Are you sure you want to delete your avatar?')">
+                                        Remove Avatar
+                                    </button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -319,6 +463,26 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                         <div>
                             <dt class="text-xs text-gray-500 dark:text-gray-400">Role</dt>
                             <dd class="text-sm text-gray-900 dark:text-white"><?= ucfirst($currentUser['role']) ?></dd>
+                        </div>
+                        <?php if ($currentUser['location']): ?>
+                        <div>
+                            <dt class="text-xs text-gray-500 dark:text-gray-400">Location</dt>
+                            <dd class="text-sm text-gray-900 dark:text-white"><?= htmlspecialchars($currentUser['location']) ?></dd>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($currentUser['website']): ?>
+                        <div>
+                            <dt class="text-xs text-gray-500 dark:text-gray-400">Website</dt>
+                            <dd class="text-sm text-gray-900 dark:text-white">
+                                <a href="<?= htmlspecialchars($currentUser['website']) ?>" target="_blank" class="text-purple-600 hover:text-purple-800 dark:text-purple-400">
+                                    <?= htmlspecialchars($currentUser['website']) ?>
+                                </a>
+                            </dd>
+                        </div>
+                        <?php endif; ?>
+                        <div>
+                            <dt class="text-xs text-gray-500 dark:text-gray-400">Timezone</dt>
+                            <dd class="text-sm text-gray-900 dark:text-white"><?= htmlspecialchars($currentUser['timezone'] ?? 'UTC') ?></dd>
                         </div>
                     </dl>
                 </div>

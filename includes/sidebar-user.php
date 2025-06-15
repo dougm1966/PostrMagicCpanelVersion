@@ -127,7 +127,7 @@
                     <i data-lucide="help-circle" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Help & Support
                 </a>
                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="/logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-primary/10 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>

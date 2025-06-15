@@ -7,7 +7,7 @@ if (isLoggedIn()) {
     exit();
 }
 
-// Handle form submission
+// Handle form submission  
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['email'] ?? '';
@@ -106,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="email" name="email" required
               placeholder="Enter your email or username"
               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+              autocomplete="username"
               class="input-glow signin-field w-full h-11 px-3 border border-black/20 rounded-lg text-[16px] placeholder-black/70 placeholder:font-normal"/>
           </div>
         </div>
@@ -114,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="mt-2 relative flex items-center">
             <input type="password" id="password" name="password" required
               placeholder="Enter your password"
+              autocomplete="current-password"
               class="input-glow signin-field w-full h-11 px-3 border border-black/20 rounded-lg text-[16px] placeholder-black/70 placeholder:font-normal"/>
             <div class="absolute right-3 cursor-pointer" id="togglePassword">
               <svg width="22" height="14" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><ellipse cx="11" cy="7" rx="10" ry="6"/><circle cx="11" cy="7" r="3"/></svg>

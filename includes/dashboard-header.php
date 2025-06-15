@@ -305,20 +305,6 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                     <i class="fas fa-sun text-yellow-500 hidden dark:block"></i>
                 </button>
                 
-                <!-- Quick Role Switch (Development) -->
-                <?php if (APP_DEBUG): ?>
-                <div class="flex items-center gap-1 text-xs bg-blue-50 px-2 py-1 rounded border">
-                    <span class="text-gray-600">View:</span>
-                    <?php 
-                    $current_role = $_SESSION['display_role'] ?? $_SESSION['user_role'] ?? 'user';
-                    $switch_role = $current_role === 'admin' ? 'user' : 'admin';
-                    ?>
-                    <a href="/switch_role.php?role=<?= $switch_role ?>" 
-                       class="font-medium text-blue-600 hover:text-blue-800 transition-colors">
-                        <?= ucfirst($current_role) ?> → <?= ucfirst($switch_role) ?>
-                    </a>
-                </div>
-                <?php endif; ?>
                 
                 <!-- Notifications -->
                 <div class="relative">
@@ -395,7 +381,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                                 </div>
                             </div>
                             
-                            <a href="profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
+                            <a href="<?= ($_SESSION['user_role'] === 'admin') ? '/admin/profile.php' : '/user-profile.php' ?>" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-user mr-2 w-4 text-center"></i> View Profile
                             </a>
                             <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
@@ -408,7 +394,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                                 <i class="fas fa-comment-dots mr-2 w-4 text-center"></i> Give Feedback
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-                            <a href="logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <a href="/logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-sign-out-alt mr-2 w-4 text-center"></i> Sign Out
                             </a>
                         </div>

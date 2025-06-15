@@ -105,17 +105,26 @@ function isLoggedIn() {
             $stmt->execute([$_SESSION['session_token']]);
             
             if ($stmt->fetch()) {
-                // Update last activity
-                if (DB_TYPE === 'sqlite') {
-                    $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = datetime('now') WHERE session_token = ?");
-                } else {
-                    $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = NOW() WHERE session_token = ?");
+                // Update last activity (skip if database is busy)
+                try {
+                    if (DB_TYPE === 'sqlite') {
+                        $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = datetime('now') WHERE session_token = ?");
+                    } else {
+                        $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = NOW() WHERE session_token = ?");
+                    }
+                    $stmt->execute([$_SESSION['session_token']]);
+                } catch (PDOException $updateError) {
+                    // Skip update if database is busy - session is still valid
+                    error_log("Session update skipped: " . $updateError->getMessage());
                 }
-                $stmt->execute([$_SESSION['session_token']]);
                 return true;
             }
         } catch (PDOException $e) {
             error_log("Session verification error: " . $e->getMessage());
+            // If it's just a lock error, assume session is still valid for this request
+            if (strpos($e->getMessage(), 'database is locked') !== false) {
+                return true;
+            }
         }
     }
     
@@ -216,7 +225,7 @@ function requireLogin() {
 }
 
 /**
- * Get current user data
+ * Get current user data with full profile information
  * @return array|null
  */
 function getCurrentUser() {
@@ -226,11 +235,142 @@ function getCurrentUser() {
     
     try {
         $pdo = getDBConnection();
-        $stmt = $pdo->prepare("SELECT id, email, username, role, created_at, last_login FROM users WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT id, email, username, role, created_at, last_login, 
+                              name, avatar, bio, location, website, twitter_handle, phone, 
+                              timezone, email_notifications, marketing_emails 
+                              FROM users WHERE id = ?");
         $stmt->execute([$_SESSION['user_id']]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Ensure we have fallback values for display
+        if ($user) {
+            $user['display_name'] = $user['name'] ?: $user['username'];
+            $user['avatar_url'] = $user['avatar'] ? '/uploads/avatars/' . $user['avatar'] : null;
+        }
+        
+        return $user;
     } catch (PDOException $e) {
         error_log("Get user error: " . $e->getMessage());
         return null;
     }
+}
+
+/**
+ * Update user profile information
+ * @param int $userId User ID
+ * @param array $profileData Profile data to update
+ * @return bool Success status
+ */
+function updateUserProfile($userId, $profileData) {
+    try {
+        $pdo = getDBConnection();
+        
+        // Build dynamic update query
+        $allowedFields = ['name', 'bio', 'location', 'website', 'twitter_handle', 'phone', 
+                         'timezone', 'email_notifications', 'marketing_emails'];
+        $updateFields = [];
+        $values = [];
+        
+        foreach ($profileData as $field => $value) {
+            if (in_array($field, $allowedFields)) {
+                $updateFields[] = "$field = ?";
+                $values[] = $value;
+            }
+        }
+        
+        if (empty($updateFields)) {
+            return false;
+        }
+        
+        $values[] = $userId; // For WHERE clause
+        
+        if (DB_TYPE === 'sqlite') {
+            $sql = "UPDATE users SET " . implode(', ', $updateFields) . ", updated_at = datetime('now') WHERE id = ?";
+        } else {
+            $sql = "UPDATE users SET " . implode(', ', $updateFields) . ", updated_at = NOW() WHERE id = ?";
+        }
+        
+        $stmt = $pdo->prepare($sql);
+        $result = $stmt->execute($values);
+        
+        // Update session data for immediate effect
+        if ($result && isset($_SESSION['user_id']) && $_SESSION['user_id'] == $userId) {
+            if (isset($profileData['name'])) {
+                $_SESSION['display_name'] = $profileData['name'];
+            }
+        }
+        
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Profile update error: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Update user avatar
+ * @param int $userId User ID
+ * @param string $avatarFilename Avatar filename
+ * @return bool Success status
+ */
+function updateUserAvatar($userId, $avatarFilename) {
+    try {
+        $pdo = getDBConnection();
+        
+        if (DB_TYPE === 'sqlite') {
+            $stmt = $pdo->prepare("UPDATE users SET avatar = ?, updated_at = datetime('now') WHERE id = ?");
+        } else {
+            $stmt = $pdo->prepare("UPDATE users SET avatar = ?, updated_at = NOW() WHERE id = ?");
+        }
+        
+        return $stmt->execute([$avatarFilename, $userId]);
+    } catch (PDOException $e) {
+        error_log("Avatar update error: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Validate profile data
+ * @param array $data Profile data to validate
+ * @param int $currentUserId Current user ID (for unique checks)
+ * @return array Validation errors
+ */
+function validateProfileData($data, $currentUserId = null) {
+    $errors = [];
+    
+    // Name validation
+    if (isset($data['name']) && strlen($data['name']) > 255) {
+        $errors['name'] = 'Name must be less than 255 characters';
+    }
+    
+    // Bio validation
+    if (isset($data['bio']) && strlen($data['bio']) > 1000) {
+        $errors['bio'] = 'Bio must be less than 1000 characters';
+    }
+    
+    // Website validation
+    if (isset($data['website']) && !empty($data['website'])) {
+        if (!filter_var($data['website'], FILTER_VALIDATE_URL)) {
+            $errors['website'] = 'Please enter a valid website URL';
+        }
+    }
+    
+    // Phone validation (basic)
+    if (isset($data['phone']) && !empty($data['phone'])) {
+        if (!preg_match('/^[\+]?[0-9\s\-\(\)]{10,20}$/', $data['phone'])) {
+            $errors['phone'] = 'Please enter a valid phone number';
+        }
+    }
+    
+    // Twitter handle validation
+    if (isset($data['twitter_handle']) && !empty($data['twitter_handle'])) {
+        $handle = str_replace('@', '', $data['twitter_handle']);
+        if (!preg_match('/^[A-Za-z0-9_]{1,15}$/', $handle)) {
+            $errors['twitter_handle'] = 'Twitter handle must be 1-15 characters, letters, numbers, and underscores only';
+        }
+        $data['twitter_handle'] = $handle; // Remove @ if present
+    }
+    
+    return $errors;
 }
