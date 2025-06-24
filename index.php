@@ -178,17 +178,17 @@
 
         <!-- Tag Buttons -->
         <div class="animate-fade-in-up animate-delay-500 mt-6 flex items-center justify-center gap-4">
-          <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full border-2 border-blue-600 text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
-            <i data-lucide="facebook" class="w-4 h-4"></i>
-            Facebook
-          </span>
-          <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full border-2 border-pink-500 text-white bg-gradient-to-r from-pink-500 to-rose-600 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
-            <i data-lucide="instagram" class="w-4 h-4"></i>
-            Instagram
-          </span>
           <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full border-2 border-sky-500 text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
             <i data-lucide="twitter" class="w-4 h-4"></i>
             Twitter
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full border-2 border-pink-600 text-white bg-gradient-to-r from-pink-600 to-rose-600 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
+            <i data-lucide="instagram" class="w-4 h-4"></i>
+            Instagram
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full border-2 border-blue-600 text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300">
+            <i data-lucide="facebook" class="w-4 h-4"></i>
+            Facebook
           </span>
         </div>
 

@@ -188,7 +188,7 @@
     </div>
 </aside>
 
-<script>
+<!-- inline dashboard script moved to assets/js/dashboard.js
     // Initialize Lucide icons
     lucide.createIcons();
 
@@ -270,4 +270,4 @@
             closeProfileMenu();
         }
     });
-</script>
+-->
