@@ -131,16 +131,66 @@ class MigrationRunner {
         $sql = preg_replace('/--.*$/m', '', $sql);
         
         if ($this->isMySQL) {
-            // For MySQL, use regular tables
-            $sql = preg_replace('/CREATE TABLE IF NOT EXISTS (\w+)_sqlite/i', '', $sql);
-            $sql = preg_replace('/CREATE INDEX IF NOT EXISTS [^;]+ON (\w+)_sqlite[^;]+;/i', '', $sql);
-        } else {
-            // For SQLite, use _sqlite tables and rename them
-            $sql = preg_replace('/CREATE TABLE IF NOT EXISTS (\w+) \(/i', '', $sql);
-            $sql = preg_replace('/CREATE TABLE IF NOT EXISTS (\w+)_sqlite \(/i', 'CREATE TABLE IF NOT EXISTS $1 (', $sql);
+            // For MySQL, remove SQLite-specific sections and use MySQL tables
+            $lines = explode("\n", $sql);
+            $cleanedLines = [];
+            $inSqliteSection = false;
             
-            // Handle indexes
-            $sql = preg_replace('/CREATE INDEX IF NOT EXISTS ([^;]+)ON (\w+)_sqlite/i', 'CREATE INDEX IF NOT EXISTS $1ON $2', $sql);
+            foreach ($lines as $line) {
+                $trimmedLine = trim($line);
+                
+                // Skip SQLite section markers
+                if (strpos($trimmedLine, '-- SQLite compatible version') !== false ||
+                    strpos($trimmedLine, '-- User Media Files Table (SQLite)') !== false ||
+                    strpos($trimmedLine, '-- Media Tags Table (SQLite)') !== false ||
+                    strpos($trimmedLine, '-- Media Tag Relations Table (SQLite)') !== false ||
+                    strpos($trimmedLine, '-- Create indexes for SQLite') !== false) {
+                    $inSqliteSection = true;
+                    continue;
+                }
+                
+                // Skip lines that are SQLite-specific
+                if (strpos($trimmedLine, '_sqlite') !== false) {
+                    continue;
+                }
+                
+                // If we're not in a SQLite section, include the line
+                if (!$inSqliteSection) {
+                    $cleanedLines[] = $line;
+                }
+            }
+            
+            $sql = implode("\n", $cleanedLines);
+            
+        } else {
+            // For SQLite, remove MySQL sections and use SQLite tables
+            $lines = explode("\n", $sql);
+            $cleanedLines = [];
+            $inMysqlSection = true; // Start assuming MySQL section
+            
+            foreach ($lines as $line) {
+                $trimmedLine = trim($line);
+                
+                // When we hit the SQLite section, switch modes
+                if (strpos($trimmedLine, '-- SQLite compatible version') !== false) {
+                    $inMysqlSection = false;
+                    continue;
+                }
+                
+                // Skip MySQL-only syntax in SQLite mode
+                if (!$inMysqlSection) {
+                    // Include SQLite lines but rename _sqlite tables to regular names
+                    if (strpos($trimmedLine, '_sqlite') !== false) {
+                        $line = str_replace('_sqlite', '', $line);
+                    }
+                    $cleanedLines[] = $line;
+                } else {
+                    // Skip MySQL section entirely for SQLite
+                    continue;
+                }
+            }
+            
+            $sql = implode("\n", $cleanedLines);
         }
         
         // Split into statements

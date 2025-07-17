@@ -5,34 +5,58 @@
 
 require_once __DIR__ . '/includes/auth-helper.php';
 
+// Debug logging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+error_log("=== MEDIA LIBRARY DEBUG START === " . date('Y-m-d H:i:s'));
+
+// CHECKPOINT A: Starting execution
+error_log("CHECKPOINT A: Starting execution");
+
 // Ensure user is logged in
+error_log("CHECKPOINT B: Before requireLogin");
 requireLogin();
+error_log("CHECKPOINT C: After requireLogin");
+
 $user = getCurrentUser();
+error_log("CHECKPOINT D: After getCurrentUser");
+
 $userId = $_SESSION['user_id'];
+error_log("CHECKPOINT E: User ID: " . $userId);
 
 $page_title = 'Media Library';
+error_log("CHECKPOINT F: Before dashboard-header include");
 require_once __DIR__ . '/includes/dashboard-header.php';
+error_log("CHECKPOINT G: After dashboard-header include");
 
 // Handle API requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("POST request received, action: " . ($_POST['action'] ?? 'none'));
     header('Content-Type: application/json');
     
     $action = $_POST['action'] ?? '';
     
     try {
+        error_log("Attempting database connection...");
         $pdo = getDBConnection();
+        error_log("Database connection successful!");
         
         switch ($action) {
             case 'delete':
+                error_log("Delete action started for media ID: " . ($_POST['media_id'] ?? 'null'));
                 $mediaId = $_POST['media_id'] ?? null;
                 if (!$mediaId) {
                     throw new Exception('Media ID required');
                 }
                 
                 // Check ownership
+                error_log("Checking ownership for media ID: $mediaId, user ID: $userId");
                 $stmt = $pdo->prepare("SELECT * FROM user_media WHERE id = ? AND user_id = ?");
                 $stmt->execute([$mediaId, $userId]);
+                error_log("Ownership query executed, fetching result...");
                 $media = $stmt->fetch();
+                error_log("Media fetch result: " . ($media ? "found" : "not found"));
                 
                 if (!$media) {
                     throw new Exception('Media not found or access denied');
@@ -176,21 +200,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['api'])) {
 }
 
 // Get initial stats
+error_log("Loading initial stats for user: $userId");
 $stats = ['total_files' => 0, 'total_size' => 0];
 try {
+    error_log("Getting database connection for stats...");
     $pdo = getDBConnection();
+    error_log("Database connection successful for stats");
+    
+    error_log("Preparing stats query...");
     $stmt = $pdo->prepare("SELECT COUNT(*) as total_files, SUM(file_size) as total_size FROM user_media WHERE user_id = ?");
+    error_log("Executing stats query with user_id: $userId");
     $stmt->execute([$userId]);
+    error_log("Stats query executed, fetching result...");
     $result = $stmt->fetch();
+    error_log("Stats result fetched: " . json_encode($result));
     if ($result) {
         $stats = $result;
     }
 } catch (Exception $e) {
     // Handle gracefully
 }
-
-// Include dashboard header
-require_once __DIR__ . '/includes/dashboard-header.php';
 ?>
 
 <main class="main-content" id="main-content">
