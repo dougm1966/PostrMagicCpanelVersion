@@ -1,5 +1,5 @@
 # Environment files
-.env
+# .env
 !.env.example
 
 # Sensitive configuration files
@@ -24,8 +24,8 @@
 /storage/framework/sessions/
 
 # Environment
-.env
-.env.*.local
+#.env
+#.env.*.local
 
 # IDE specific files
 .idea/

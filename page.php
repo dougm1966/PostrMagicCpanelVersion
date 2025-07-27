@@ -35,7 +35,7 @@ try {
             <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Page Not Found</h1>
             <p class="mt-6 text-base text-gray-500">The page you\'re looking for doesn\'t exist or has been moved.</p>
             <div class="mt-10 flex justify-center">
-                <a href="/" class="text-base font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                <a href="<?= BASE_URL ?>" class="text-base font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                     Go back home<span aria-hidden="true"> &rarr;</span>
                 </a>
             </div>
@@ -76,7 +76,7 @@ try {
         <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Server Error</h1>
         <p class="mt-6 text-base text-gray-500">Sorry, something went wrong on our end. Please try again later.</p>
         <div class="mt-10 flex justify-center">
-            <a href="/" class="text-base font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+            <a href="<?= BASE_URL ?>" class="text-base font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                 Go back home<span aria-hidden="true"> &rarr;</span>
             </a>
         </div>

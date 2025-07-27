@@ -9,9 +9,27 @@ require_once __DIR__ . '/../includes/media-manager.php';
 require_once __DIR__ . '/../includes/tag-manager.php';
 require_once __DIR__ . '/../includes/migration-runner.php';
 
-// Ensure user is admin
-requireAdmin();
-$user = getCurrentUser();
+// Check if this is an API request (to avoid session updates)
+$isApiRequest = isset($_GET['api']) || (isset($_POST['action']) && $_SERVER['REQUEST_METHOD'] === 'POST');
+
+if ($isApiRequest) {
+    // For API requests, only check authentication without updating session
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Access denied']);
+        exit();
+    }
+    $user = [
+        'id' => $_SESSION['user_id'],
+        'email' => $_SESSION['user_email'] ?? '',
+        'username' => $_SESSION['username'] ?? '',
+        'role' => $_SESSION['user_role'] ?? 'user'
+    ];
+} else {
+    // For page loads, perform normal authentication with session updates
+    requireAdmin();
+    $user = getCurrentUser();
+}
 
 // Initialize database if needed
 try {
@@ -246,10 +264,13 @@ try {
 } catch (Exception $e) {
     $initialStats = ['total_files' => 0, 'total_size' => 0];
 }
-// Include dashboard header
-require_once __DIR__ . '/../includes/dashboard-header.php';
+
+// Only include dashboard header for page loads (not API requests)
+if (!$isApiRequest) {
+    require_once __DIR__ . '/../includes/dashboard-header.php';
+}
 ?>
-    
+
     <!-- Main Content -->
     <main class="main-content" id="main-content">
         <div class="p-4 md:p-6">
@@ -535,8 +556,6 @@ const AdminMediaLibrary = {
         }
     },
     
-    // ... (rest of the methods similar to user media library)
-    
     async loadUsers() {
         try {
             const response = await fetch('?api=1&action=users');
@@ -607,8 +626,11 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <?php 
-// Include dashboard footer
-require_once __DIR__ . '/../includes/dashboard-footer.php'; 
+// Only include dashboard footer for page loads (not API requests)
+if (!$isApiRequest) {
+    // Include dashboard footer
+    require_once __DIR__ . '/../includes/dashboard-footer.php'; 
+}
 ?>
 
 <?php

@@ -93,8 +93,24 @@ function createUserSession($userId) {
  * @return bool
  */
 function isLoggedIn() {
+    // Check if this is an API/AJAX request (don't update session for these)
+    $isApiRequest = (
+        isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+        strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+    ) || (
+        isset($_SERVER['CONTENT_TYPE']) && 
+        strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false
+    ) || (
+        isset($_GET['api']) || isset($_POST['api'])
+    );
+    
     if (isset($_SESSION['user_id']) && isset($_SESSION['session_token'])) {
-        // Verify session is still valid
+        // For API requests, just verify session exists (no DB update)
+        if ($isApiRequest) {
+            return true;
+        }
+        
+        // For page loads, verify session and update activity
         try {
             $pdo = getDBConnection();
             if (DB_TYPE === 'sqlite') {
@@ -105,26 +121,33 @@ function isLoggedIn() {
             $stmt->execute([$_SESSION['session_token']]);
             
             if ($stmt->fetch()) {
-                // Update last activity (skip if database is busy)
-                try {
-                    if (DB_TYPE === 'sqlite') {
-                        $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = datetime('now') WHERE session_token = ?");
-                    } else {
-                        $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = NOW() WHERE session_token = ?");
+                // Only update last activity for page loads, not API calls
+                $retryCount = 0;
+                $maxRetries = 3;
+                while ($retryCount < $maxRetries) {
+                    try {
+                        if (DB_TYPE === 'sqlite') {
+                            $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = datetime('now') WHERE session_token = ?");
+                        } else {
+                            $stmt = $pdo->prepare("UPDATE user_sessions SET last_activity = NOW() WHERE session_token = ?");
+                        }
+                        $stmt->execute([$_SESSION['session_token']]);
+                        break;
+                    } catch (PDOException $updateError) {
+                        if (strpos($updateError->getMessage(), 'database is locked') !== false) {
+                            $retryCount++;
+                            usleep(500000); // Wait 0.5 seconds before retrying
+                        } else {
+                            error_log("Session update error: " . $updateError->getMessage());
+                            break;
+                        }
                     }
-                    $stmt->execute([$_SESSION['session_token']]);
-                } catch (PDOException $updateError) {
-                    // Skip update if database is busy - session is still valid
-                    error_log("Session update skipped: " . $updateError->getMessage());
                 }
                 return true;
             }
         } catch (PDOException $e) {
             error_log("Session verification error: " . $e->getMessage());
-            // If it's just a lock error, assume session is still valid for this request
-            if (strpos($e->getMessage(), 'database is locked') !== false) {
-                return true;
-            }
+            return false;
         }
     }
     

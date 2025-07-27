@@ -491,15 +491,15 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4">Quick Actions</h4>
                     <div class="space-y-2">
-                        <a href="/admin/settings.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
+                        <a href="<?= BASE_URL ?>admin/settings.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
                             <i data-lucide="settings" class="inline-block mr-2 h-4 w-4"></i>
                             System Settings
                         </a>
-                        <a href="/admin/logs.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
+                        <a href="<?= BASE_URL ?>admin/logs.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
                             <i data-lucide="file-text" class="inline-block mr-2 h-4 w-4"></i>
                             View Logs
                         </a>
-                        <a href="/admin/user-management.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
+                        <a href="<?= BASE_URL ?>admin/user-management.php" class="block w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
                             <i data-lucide="users" class="inline-block mr-2 h-4 w-4"></i>
                             Manage Users
                         </a>

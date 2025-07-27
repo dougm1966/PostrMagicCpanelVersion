@@ -299,7 +299,7 @@ require_once __DIR__ . '/../includes/dashboard-header.php';
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
                                     <?php if ($page['is_published']): ?>
-                                    <a href="/page/<?= htmlspecialchars($page['slug']) ?>" target="_blank" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" title="View Page">
+                                    <a href="<?= BASE_URL ?>page/<?= htmlspecialchars($page['slug']) ?>" target="_blank" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" title="View Page">
                                         <i data-lucide="external-link" class="h-4 w-4"></i>
                                     </a>
                                     <?php endif; ?>

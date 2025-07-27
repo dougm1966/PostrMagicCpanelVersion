@@ -131,4 +131,4 @@ echo "<h3>Test 5: Simple Update Test</h3>";
     </p>
 </form>
 
-<p><a href="/admin/profile.php">Back to Admin Profile</a></p>
+<p><a href="<?= BASE_URL ?>admin/profile.php">Back to Admin Profile</a></p>

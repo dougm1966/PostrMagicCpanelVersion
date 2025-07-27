@@ -23,7 +23,7 @@
     <!-- Sidebar Navigation -->
     <nav class="p-4 space-y-1 flex-grow overflow-y-auto">
         <!-- Dashboard -->
-        <a href="/admin/dashboard.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+        <a href="<?= BASE_URL ?>admin/dashboard.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
             <i data-lucide="layout-dashboard" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
             Admin Dashboard
         </a>
@@ -38,10 +38,10 @@
                 <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500 dark:text-gray-400"></i>
             </button>
             <div class="pl-10 space-y-1 mt-1">
-                <a href="/admin/user-management.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/user-management.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     View All Users
                 </a>
-                <a href="/admin/user-management.php?activity=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/user-management.php?activity=1" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Activity Logs
                 </a>
             </div>
@@ -57,19 +57,19 @@
                 <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500 dark:text-gray-400"></i>
             </button>
             <div class="pl-10 space-y-1 mt-1">
-                <a href="/admin/events.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/events.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     All Events
                     <span class="ml-auto inline-block py-0.5 px-2 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                         42
                     </span>
                 </a>
-                <a href="/admin/events.php?status=claimed" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/events.php?status=claimed" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Claimed Events
                     <span class="ml-auto inline-block py-0.5 px-2 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                         35
                     </span>
                 </a>
-                <a href="/admin/events.php?status=unclaimed" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/events.php?status=unclaimed" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Unclaimed Events
                     <span class="ml-auto inline-block py-0.5 px-2 text-xs rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
                         7
@@ -88,26 +88,26 @@
                 <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500 dark:text-gray-400"></i>
             </button>
             <div class="pl-10 space-y-1 mt-1">
-                <a href="/admin/media.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/media.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Media Library
                 </a>
-                <a href="/admin/templates.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/templates.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Email Templates
                 </a>
-                <a href="/admin/pages.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+                <a href="<?= BASE_URL ?>admin/pages.php" class="group flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
                     Static Pages
                 </a>
             </div>
         </div>
 
         <!-- Analytics & Reports -->
-        <a href="/admin/analytics.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+        <a href="<?= BASE_URL ?>admin/analytics.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
             <i data-lucide="bar-chart-2" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
             Analytics & Reports
         </a>
 
         <!-- System Settings -->
-        <a href="/admin/settings.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
+        <a href="<?= BASE_URL ?>admin/settings.php" class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-md text-gray-900 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-700 dark:hover:text-purple-400">
             <i data-lucide="settings" class="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-purple-700 dark:group-hover:text-purple-400"></i>
             System Settings
         </a>
@@ -121,7 +121,7 @@
         <!-- System Status -->
         <div class="mb-3 px-3">
             <div class="flex justify-between items-center mb-1">
-                <a href="/system-overview.php" class="text-xs font-medium text-gray-700 hover:text-purple-600 hover:underline">System Status</a>
+                <a href="<?= BASE_URL ?>system-overview.php" class="text-xs font-medium text-gray-700 hover:text-purple-600 hover:underline">System Status</a>
                 <span class="text-xs font-medium text-green-600">Healthy</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-1.5">
@@ -170,17 +170,17 @@
                 </div>
             </div>
             <div class="p-2">
-                <a href="/admin/profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="<?= BASE_URL ?>admin/profile.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="user" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Admin Profile
                 </a>
-                <a href="/admin/settings.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="<?= BASE_URL ?>admin/settings.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="settings" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Settings
                 </a>
-                <a href="/admin/logs.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="<?= BASE_URL ?>admin/logs.php" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="file-text" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> System Logs
                 </a>
                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                <a href="/logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
+                <a href="<?= BASE_URL ?>logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-md transition-colors">
                     <i data-lucide="log-out" class="inline-block mr-2 h-4 w-4 align-text-bottom"></i> Sign Out
                 </a>
             </div>

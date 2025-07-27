@@ -1,0 +1,15 @@
+# PostrMagic Upload Security
+Options -Indexes
+Options -ExecCGI
+
+# Allow image files
+<FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Block PHP and other executable files
+<FilesMatch "\.(php|phtml|php3|php4|php5|pl|py|jsp|asp|sh|cgi)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

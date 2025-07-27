@@ -26,8 +26,12 @@ $endpoint = $_GET['endpoint'] ?? '';
 
 if (!in_array($endpoint, $publicEndpoints)) {
     try {
-        requireLogin();
-        $user = getCurrentUser();
+        // For API endpoints, just check authentication without updating session
+        if (!isset($_SESSION['user_id'])) {
+            respondWithError('Unauthorized', 401);
+        }
+        // Don't update session activity for API calls
+        $user = ['id' => $_SESSION['user_id'], 'is_admin' => $_SESSION['is_admin'] ?? false];
     } catch (Exception $e) {
         respondWithError('Unauthorized', 401);
     }
@@ -151,74 +155,47 @@ function handleUpload() {
             $result = $mediaManager->uploadMedia($file, $user['id'], $context, $tags);
             $results[] = $result;
         } else {
-            $results[] = ['success' => false, 'error' => getUploadError($file['error'])];
+            $results[] = ['success' => false, 'error' => getUploadError($file['error']), 'filename' => $file['name']];
         }
     }
     
-    $successCount = count(array_filter($results, fn($r) => $r['success']));
-    $totalCount = count($results);
-    
-    respondWithSuccess([
-        'message' => "Uploaded $successCount of $totalCount files successfully",
-        'results' => $results,
-        'success_count' => $successCount,
-        'total_count' => $totalCount
-    ]);
+    respondWithSuccess($results);
 }
 
-/**
- * Handle media listing
- */
 function handleList() {
     global $mediaManager, $user;
     
     $options = [
-        'page' => (int) ($_GET['page'] ?? 1),
-        'limit' => min((int) ($_GET['limit'] ?? 20), 100), // Max 100 items per page
+        'page' => max(1, (int) ($_GET['page'] ?? 1)),
+        'limit' => min((int) ($_GET['limit'] ?? 20), 100),
         'search' => $_GET['search'] ?? null,
         'context' => $_GET['context'] ?? null,
-        'tags' => isset($_GET['tags']) ? explode(',', $_GET['tags']) : [],
         'sort' => $_GET['sort'] ?? 'upload_date',
-        'order' => $_GET['order'] ?? 'DESC'
+        'order' => strtoupper($_GET['order'] ?? 'DESC')
     ];
     
-    // Admin can view all media
-    $isAdmin = $user['role'] === 'admin';
-    if ($isAdmin && isset($_GET['user_id'])) {
-        $options['user_id'] = $_GET['user_id'];
-        $result = $mediaManager->getAllMedia($options);
-    } else {
-        $result = $mediaManager->getUserMedia($user['id'], $options);
-    }
-    
+    $result = $mediaManager->getUserMedia($user['id'], $options);
     respondWithSuccess($result);
 }
 
-/**
- * Handle single media item retrieval
- */
 function handleGet() {
     global $mediaManager, $user;
     
-    $mediaId = $_GET['id'] ?? null;
+    $id = $_GET['id'] ?? null;
     
-    if (!$mediaId) {
+    if (!$id) {
         respondWithError('Media ID required');
     }
     
-    $isAdmin = $user['role'] === 'admin';
-    $media = $mediaManager->getMediaById($mediaId, $user['id'], $isAdmin);
+    $result = $mediaManager->getMedia($id, $user['id']);
     
-    if (!$media) {
-        respondWithError('Media not found', 404);
+    if ($result['success']) {
+        respondWithSuccess($result['media']);
+    } else {
+        respondWithError($result['error']);
     }
-    
-    respondWithSuccess(['media' => $media]);
 }
 
-/**
- * Handle media update
- */
 function handleUpdate() {
     global $mediaManager, $user;
     
@@ -227,9 +204,9 @@ function handleUpdate() {
         $input = $_POST;
     }
     
-    $mediaId = $input['id'] ?? $_GET['id'] ?? null;
+    $id = $input['id'] ?? $_GET['id'] ?? null;
     
-    if (!$mediaId) {
+    if (!$id) {
         respondWithError('Media ID required');
     }
     
@@ -237,9 +214,11 @@ function handleUpdate() {
     if (isset($input['filename'])) {
         $updates['original_filename'] = $input['filename'];
     }
+    if (isset($input['context'])) {
+        $updates['context'] = $input['context'];
+    }
     
-    $isAdmin = $user['role'] === 'admin';
-    $result = $mediaManager->updateMedia($mediaId, $user['id'], $updates, $isAdmin);
+    $result = $mediaManager->updateMedia($id, $user['id'], $updates);
     
     if ($result['success']) {
         respondWithSuccess($result);
@@ -248,25 +227,16 @@ function handleUpdate() {
     }
 }
 
-/**
- * Handle media deletion
- */
 function handleDelete() {
     global $mediaManager, $user;
     
-    $input = json_decode(file_get_contents('php://input'), true);
-    if (!$input) {
-        $input = $_POST;
-    }
+    $id = $_GET['id'] ?? $_POST['id'] ?? null;
     
-    $mediaId = $input['id'] ?? $_GET['id'] ?? null;
-    
-    if (!$mediaId) {
+    if (!$id) {
         respondWithError('Media ID required');
     }
     
-    $isAdmin = $user['role'] === 'admin';
-    $result = $mediaManager->deleteMedia($mediaId, $user['id'], $isAdmin);
+    $result = $mediaManager->deleteMedia($id, $user['id']);
     
     if ($result['success']) {
         respondWithSuccess($result);
@@ -275,29 +245,22 @@ function handleDelete() {
     }
 }
 
-/**
- * Handle tag operations
- */
 function handleTags() {
-    global $tagManager, $user, $method;
+    $method = $_SERVER['REQUEST_METHOD'];
     
     switch ($method) {
         case 'GET':
             handleGetTags();
             break;
-            
         case 'POST':
             handleCreateTag();
             break;
-            
         case 'PUT':
             handleUpdateTag();
             break;
-            
         case 'DELETE':
             handleDeleteTag();
             break;
-            
         default:
             respondWithError('Method not allowed', 405);
     }
@@ -306,14 +269,8 @@ function handleTags() {
 function handleGetTags() {
     global $tagManager, $user;
     
-    $options = [
-        'search' => $_GET['search'] ?? null,
-        'sort' => $_GET['sort'] ?? 'tag_name',
-        'order' => $_GET['order'] ?? 'ASC',
-        'limit' => isset($_GET['limit']) ? min((int) $_GET['limit'], 100) : null
-    ];
-    
-    $tags = $tagManager->getUserTags($user['id'], $options);
+    $limit = min((int) ($_GET['limit'] ?? 50), 100);
+    $tags = $tagManager->getUserTags($user['id'], $limit);
     respondWithSuccess(['tags' => $tags]);
 }
 
@@ -325,10 +282,14 @@ function handleCreateTag() {
         $input = $_POST;
     }
     
-    $tagName = $input['name'] ?? '';
-    $tagColor = $input['color'] ?? '#6366f1';
+    $name = $input['name'] ?? null;
+    $color = $input['color'] ?? null;
     
-    $result = $tagManager->createTag($user['id'], $tagName, $tagColor);
+    if (!$name) {
+        respondWithError('Tag name required');
+    }
+    
+    $result = $tagManager->createTag($user['id'], $name, $color);
     
     if ($result['success']) {
         respondWithSuccess($result);
@@ -341,19 +302,21 @@ function handleUpdateTag() {
     global $tagManager, $user;
     
     $input = json_decode(file_get_contents('php://input'), true);
-    $tagId = $input['id'] ?? $_GET['id'] ?? null;
+    if (!$input) {
+        $input = $_POST;
+    }
+    
+    $tagId = $input['id'] ?? null;
+    $name = $input['name'] ?? null;
+    $color = $input['color'] ?? null;
     
     if (!$tagId) {
         respondWithError('Tag ID required');
     }
     
     $updates = [];
-    if (isset($input['name'])) {
-        $updates['tag_name'] = $input['name'];
-    }
-    if (isset($input['color'])) {
-        $updates['tag_color'] = $input['color'];
-    }
+    if ($name) $updates['name'] = $name;
+    if ($color) $updates['color'] = $color;
     
     $result = $tagManager->updateTag($tagId, $user['id'], $updates);
     

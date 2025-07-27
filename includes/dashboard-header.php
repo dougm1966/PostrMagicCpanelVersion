@@ -4,11 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Define base URL if not already defined
-if (!defined('BASE_URL')) {
-    $base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-    define('BASE_URL', $base_url);
-}
+// BASE_URL is now defined in config/config.php
+// No need to redefine it here
 
 // Include config and auth helper only if not already loaded
 if (!defined('POSTRMAGIC_CONFIG_LOADED')) {
@@ -385,7 +382,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                                 </div>
                             </div>
                             
-                            <a href="<?= ($_SESSION['user_role'] === 'admin') ? '/admin/profile.php' : '/user-profile.php' ?>" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
+                            <a href="<?= BASE_URL . (($_SESSION['user_role'] === 'admin') ? 'admin/profile.php' : 'user-profile.php') ?>" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-user mr-2 w-4 text-center"></i> View Profile
                             </a>
                             <button id="theme-menu-toggle" class="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
@@ -398,7 +395,7 @@ $dark_mode = isset($_COOKIE['dark_mode']) ? $_COOKIE['dark_mode'] === 'true' : t
                                 <i class="fas fa-comment-dots mr-2 w-4 text-center"></i> Give Feedback
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-                            <a href="/logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <a href="<?= BASE_URL ?>logout.php" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <i class="fas fa-sign-out-alt mr-2 w-4 text-center"></i> Sign Out
                             </a>
                         </div>

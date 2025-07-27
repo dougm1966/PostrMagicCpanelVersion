@@ -14,7 +14,7 @@
                 <p class="text-gray-600 mb-8">AI Event Poster to Social Media Magic</p>
                 
                 <div class="space-y-4">
-                    <a href="/login.php" class="block w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">
+                    <a href="<?= BASE_URL ?>login.php" class="block w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">
                         Login
                     </a>
                     
@@ -27,10 +27,10 @@
                 <div class="mt-8 pt-6 border-t border-gray-200">
                     <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
                     <div class="grid grid-cols-2 gap-2 text-sm">
-                        <a href="/admin/profile.php" class="text-blue-600 hover:underline">Admin Profile</a>
-                        <a href="/user-profile.php" class="text-blue-600 hover:underline">User Profile</a>
-                        <a href="/setup_database.php" class="text-blue-600 hover:underline">Database Setup</a>
-                        <a href="/add_profile_fields_safe.php" class="text-blue-600 hover:underline">Profile Migration</a>
+                        <a href="<?= BASE_URL ?>admin/profile.php" class="text-blue-600 hover:underline">Admin Profile</a>
+                        <a href="<?= BASE_URL ?>user-profile.php" class="text-blue-600 hover:underline">User Profile</a>
+                        <a href="<?= BASE_URL ?>setup_database.php" class="text-blue-600 hover:underline">Database Setup</a>
+                        <a href="<?= BASE_URL ?>add_profile_fields_safe.php" class="text-blue-600 hover:underline">Profile Migration</a>
                     </div>
                 </div>
             </div>

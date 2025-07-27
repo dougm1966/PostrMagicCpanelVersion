@@ -5,14 +5,28 @@
 
 require_once __DIR__ . '/../includes/auth-helper.php';
 
-// Ensure user is admin
-requireAdmin();
-$user = getCurrentUser();
+// Check if this is an API request (GET or POST with api parameter)
+$isApiRequest = isset($_GET['api']) || (isset($_POST['api']) && $_SERVER['REQUEST_METHOD'] === 'POST');
 
-$page_title = 'Media Library (Admin)';
+// For API requests, just check admin access without updating session
+if ($isApiRequest) {
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+        exit;
+    }
+    // Don't update session activity for API calls
+    $user = ['id' => $_SESSION['user_id'], 'is_admin' => true];
+} else {
+    // For page loads, use normal admin authentication (updates session)
+    requireAdmin();
+    $user = getCurrentUser();
+    
+    $page_title = 'Media Library (Admin)';
+}
 
-// Handle API requests for media operations
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Handle API requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isApiRequest) {
     header('Content-Type: application/json');
     
     $action = $_POST['action'] ?? '';
@@ -62,65 +76,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['api'])) {
     header('Content-Type: application/json');
     
-    try {
-        $pdo = getDBConnection();
-        $action = $_GET['action'] ?? '';
-        
-        switch ($action) {
-            case 'media':
-                $page = max(1, intval($_GET['page'] ?? 1));
-                $limit = min(100, max(10, intval($_GET['limit'] ?? 20)));
-                $offset = ($page - 1) * $limit;
-                $search = $_GET['search'] ?? '';
-                
-                $sql = "SELECT m.*, u.username 
-                       FROM user_media m 
-                       LEFT JOIN users u ON m.user_id = u.id 
-                       WHERE 1=1";
-                $params = [];
-                
-                if ($search) {
-                    $sql .= " AND (m.original_filename LIKE ? OR u.username LIKE ?)";
-                    $params[] = "%$search%";
-                    $params[] = "%$search%";
-                }
-                
-                $sql .= " ORDER BY m.upload_date DESC LIMIT ? OFFSET ?";
-                $params[] = $limit;
-                $params[] = $offset;
-                
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute($params);
-                $media = $stmt->fetchAll();
-                
-                // Format file sizes and URLs
-                foreach ($media as &$item) {
-                    $item['formatted_size'] = formatBytes($item['file_size']);
-                    $item['url'] = '/uploads/' . $item['file_path'];
-                    $item['thumbnail_url'] = $item['thumbnail_path'] ? '/uploads/' . $item['thumbnail_path'] : $item['url'];
-                }
-                
-                echo json_encode(['success' => true, 'media' => $media]);
-                break;
-                
-            case 'stats':
-                $stmt = $pdo->query("SELECT 
-                    COUNT(*) as total_files,
-                    SUM(file_size) as total_size,
-                    COUNT(DISTINCT user_id) as users_with_media
-                    FROM user_media");
-                $stats = $stmt->fetch();
-                
-                echo json_encode(['success' => true, 'stats' => $stats]);
-                break;
-                
-            default:
-                throw new Exception('Invalid action');
-        }
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    $action = $_GET['action'] ?? '';
+    
+    switch ($action) {
+        case 'media':
+            $page = max(1, intval($_GET['page'] ?? 1));
+            $limit = min(100, max(10, intval($_GET['limit'] ?? 20)));
+            $offset = ($page - 1) * $limit;
+            $search = $_GET['search'] ?? '';
+            
+            $sql = "SELECT m.*, u.username 
+                   FROM user_media m 
+                   LEFT JOIN users u ON m.user_id = u.id 
+                   WHERE 1=1";
+            $params = [];
+            
+            if ($search) {
+                $sql .= " AND (m.original_filename LIKE ? OR u.username LIKE ?)";
+                $params[] = "%$search%";
+                $params[] = "%$search%";
+            }
+            
+            $sql .= " ORDER BY m.upload_date DESC LIMIT ? OFFSET ?";
+            $params[] = $limit;
+            $params[] = $offset;
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+            $media = $stmt->fetchAll();
+            
+            // Format file sizes and URLs
+            foreach ($media as &$item) {
+                $item['formatted_size'] = formatBytes($item['file_size']);
+                $item['url'] = '/uploads/' . $item['file_path'];
+                $item['thumbnail_url'] = $item['thumbnail_path'] ? '/uploads/' . $item['thumbnail_path'] : $item['url'];
+            }
+            
+            echo json_encode(['success' => true, 'media' => $media]);
+            break;
+            
+        case 'stats':
+            $stmt = $pdo->query("SELECT 
+                COUNT(*) as total_files,
+                SUM(file_size) as total_size,
+                COUNT(DISTINCT user_id) as users_with_media
+                FROM user_media");
+            $stats = $stmt->fetch();
+            
+            echo json_encode(['success' => true, 'stats' => $stats]);
+            break;
+            
+        default:
+            throw new Exception('Invalid action');
     }
-    exit;
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+}
+exit;
 }
 
 // Get initial stats

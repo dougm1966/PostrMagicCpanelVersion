@@ -2,7 +2,10 @@
 RewriteEngine On
 
 # Set the base directory (adjust if your site is in a subdirectory)
-# RewriteBase /
+RewriteBase /postrmagic/
+
+# Prevent direct access to the includes directory
+RewriteRule ^includes/ - [F,L]
 
 # Redirect to HTTPS (uncomment in production)
 # RewriteCond %{HTTPS} off
@@ -57,9 +60,3 @@ Options -Indexes
     Order allow,deny
     Deny from all
 </FilesMatch>
-
-# Prevent direct access to includes directory
-<Directory "includes">
-    Order allow,deny
-    Deny from all
-</Directory>

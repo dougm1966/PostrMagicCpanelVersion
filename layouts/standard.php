@@ -18,14 +18,14 @@ ob_start();
     <meta name="description" content="<?= htmlspecialchars($meta_description ?? 'A page from ' . SITE_NAME) ?>">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/images/favicon.png">
     
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
     <!-- Custom Styles -->
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>assets/css/main.css" rel="stylesheet">
     
     <!-- Dark mode support -->
     <script>
@@ -43,32 +43,32 @@ ob_start();
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <a href="/" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                        <a href="<?= BASE_URL ?>" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
                             <?= SITE_NAME ?>
                         </a>
                     </div>
                     <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/" class="border-indigo-500 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="<?= BASE_URL ?>" class="border-indigo-500 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Home
                         </a>
-                        <a href="/about" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="<?= BASE_URL ?>about" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             About
                         </a>
-                        <a href="/contact" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        <a href="<?= BASE_URL ?>contact" class="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                             Contact
                         </a>
                     </nav>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
                     <?php if (isLoggedIn()): ?>
-                        <a href="/dashboard" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="<?= BASE_URL ?>dashboard" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Dashboard
                         </a>
                     <?php else: ?>
-                        <a href="/login" class="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white px-3 py-2 text-sm font-medium">
+                        <a href="<?= BASE_URL ?>login" class="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white px-3 py-2 text-sm font-medium">
                             Log in
                         </a>
-                        <a href="/register" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="<?= BASE_URL ?>register" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Sign up
                         </a>
                     <?php endif; ?>
@@ -93,14 +93,14 @@ ob_start();
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="sm:hidden hidden" id="mobile-menu">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="/" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="/about" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
-                <a href="/contact" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Contact</a>
+                <a href="<?= BASE_URL ?>" class="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="<?= BASE_URL ?>about" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">About</a>
+                <a href="<?= BASE_URL ?>contact" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Contact</a>
                 <?php if (isLoggedIn()): ?>
-                    <a href="/dashboard" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
+                    <a href="<?= BASE_URL ?>dashboard" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Dashboard</a>
                 <?php else: ?>
-                    <a href="/login" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Log in</a>
-                    <a href="/register" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign up</a>
+                    <a href="<?= BASE_URL ?>login" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Log in</a>
+                    <a href="<?= BASE_URL ?>register" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign up</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -119,19 +119,19 @@ ob_start();
         <div class="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
             <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
                 <div class="px-5 py-2">
-                    <a href="/about" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">About</a>
+                    <a href="<?= BASE_URL ?>about" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">About</a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/blog" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Blog</a>
+                    <a href="<?= BASE_URL ?>blog" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Blog</a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/contact" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Contact</a>
+                    <a href="<?= BASE_URL ?>contact" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Contact</a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/privacy" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Privacy Policy</a>
+                    <a href="<?= BASE_URL ?>privacy" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Privacy Policy</a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/terms" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Terms of Service</a>
+                    <a href="<?= BASE_URL ?>terms" class="text-base text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Terms of Service</a>
                 </div>
             </nav>
             <p class="mt-8 text-center text-base text-gray-400">

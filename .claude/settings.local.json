@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed:*)",
+      "Bash(grep:*)",
+      "mcp__filesystem__list_allowed_directories",
+      "mcp__filesystem__directory_tree",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__filesystem__search_files",
+      "Bash(ls:*)",
+      "Bash(php:*)",
+      "mcp__filesystem__create_directory",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(sudo journalctl:*)"
+    ],
+    "deny": []
+  },
+  "enabledMcpjsonServers": [
+    "filesystem",
+    "memory",
+    "github",
+    "sequential-thinking"
+  ]
+}
